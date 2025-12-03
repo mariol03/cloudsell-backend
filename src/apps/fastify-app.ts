@@ -1,4 +1,5 @@
 import fastify from "fastify";
+import { healthRoutes } from "../contexts/shared/infrastructure/health.fastify-route";
 
 export const app = fastify({
     logger: {
@@ -12,6 +13,8 @@ export const app = fastify({
     },
   },
 });
+
+app.register(healthRoutes, { prefix: "/health" });
 
 // Manejo de rutas no encontradas (404)
 app.setNotFoundHandler((request, reply) => {

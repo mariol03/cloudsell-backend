@@ -9,7 +9,7 @@
 * [x] Configuración de Fastify y punto de entrada (`src/index.ts`)
 * [x] Configuración de logging (ej. pino)
 * [ ] Integración inicial de Prisma ORM y conexión a PostgreSQL
-
+* [x] Primeros tests de salud (endpoint `/health`)
 ---
 
 ### 🔒 Sprint 2: Seguridad, Autenticación y Perfiles de Usuario
