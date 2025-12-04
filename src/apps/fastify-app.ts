@@ -1,5 +1,7 @@
 import fastify from "fastify";
 import { healthRoutes } from "../contexts/shared/infrastructure/health.fastify-route";
+import { authRoutes } from "../contexts/users/infrastructure/auth.fastify-route";
+import { userRoutes } from "../contexts/users/infrastructure/user.fastify-route";
 
 export const app = fastify({
     logger: {
@@ -15,6 +17,8 @@ export const app = fastify({
 });
 
 app.register(healthRoutes, { prefix: "/health" });
+app.register(authRoutes, { prefix: "/auth" });
+app.register(userRoutes, { prefix: "/users" });
 
 // Manejo de rutas no encontradas (404)
 app.setNotFoundHandler((request, reply) => {
