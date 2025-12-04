@@ -16,11 +16,15 @@
 
 **Objetivo:** Implementar el registro, autenticación segura y la diferenciación de roles (Comprador/Vendedor).
 
-* [ ] Entidad `User` con campo **`role`** (Comprador/Vendedor).
-* [ ] Implementación de **Registro** y **Autenticación segura** (JWT, bcrypt para contraseñas).
-* [ ] Rutas de **gestión de datos personales** para la correcta gestión de datos personales.
-* [ ] Middleware para **Autenticación** y **Autorización** basado en roles.
-* [ ] Tests unitarios y de integración para autenticación y gestión de usuarios.
+* [x] Entidad `User` con campo **`role`** (Comprador/Vendedor).
+* [x] Implementación de **Registro** y **Autenticación segura** (JWT, contraseñas hasheadas con scrypt).
+* [x] Rutas de **autenticación** públicas (`/auth/register`, `/auth/login`).
+* [x] Middleware para **Autenticación** y **Autorización** basado en roles.
+* [x] Tests unitarios para autenticación, servicios y use-cases (39 tests ✅).
+* [x] Rutas de usuarios protegidas con middleware de autenticación.
+* [x] Documentación completa (AUTHENTICATION.md, QUICK_START.md).
+
+**Estado:** ✅ COMPLETADO
 
 ---
 
@@ -28,10 +32,10 @@
 
 **Objetivo:** Implementar la gestión de productos y stock, exclusiva para vendedores.
 
-* [ ] Entidad `Product` con relación al `User` (Vendedor).
-* [ ] Casos de uso del Vendedor (CRUD) para **crear, editar y eliminar los diferentes artículos**.
-* [ ] **Gestión de Stock**: Campo `stockQuantity` en `Product` y Casos de uso para actualizar el stock.
-* [ ] Rutas Fastify para la gestión de productos, protegidas por el rol `Vendedor`.
+* [x] Entidad `Item` con relación al `User` (Vendedor).
+* [x] Casos de uso del Vendedor (CRUD) para **crear, editar y eliminar los diferentes artículos**.
+* [x] **Gestión de Stock**: Campo `stockQuantity` en `Product` y Casos de uso para actualizar el stock.
+* [x] Rutas Fastify para la gestión de productos, protegidas por el rol `Vendedor`.
 * [ ] Tests unitarios y de integración para la gestión de productos por parte del vendedor.
 
 ---
@@ -40,9 +44,9 @@
 
 **Objetivo:** Implementar la visualización y las herramientas de búsqueda para los compradores.
 
-* [ ] Entidad `Category` y su relación con `Product`.
-* [ ] **Visualización del Catálogo Completo** de artículos del marketplace.
-* [ ] Implementar **filtrado y búsqueda sobre los artículos del catálogo**.
+* [x] Entidad `Category` y su relación con `Product`.
+* [x] **Visualización del Catálogo Completo** de artículos del marketplace.
+* [x] Implementar **filtrado y búsqueda sobre los artículos del catálogo**.
 * [ ] Entidad `Wishlist` y funcionalidad para **añadir artículos a una lista personalizada de deseos**.
 * [ ] Tests unitarios y de integración para catálogo y filtros.
 
