@@ -43,10 +43,13 @@
 **Objetivo:** Implementar la visualización y las herramientas de búsqueda para los compradores.
 
 * [x] Entidad `Category` y su relación con `Product`.
-* [x] **Visualización del Catálogo Completo** de artículos del marketplace.
-* [x] Implementar **filtrado y búsqueda sobre los artículos del catálogo**.
-* [ ] Entidad `Wishlist` y funcionalidad para **añadir artículos a una lista personalizada de deseos**.
-* [ ] Tests unitarios y de integración para catálogo y filtros.
+* [x] **Visualización del Catálogo Completo** de artículos del marketplace (endpoint `GET /items`).
+* [x] Implementar **búsqueda básica** sobre los artículos del catálogo (búsqueda por `name` y `id`).
+* [x] Filtros avanzados (por categoría, rango de precio, paginación) - implementados con query params.
+* [x] Entidad `Wishlist` y funcionalidad para **añadir artículos a una lista personalizada de deseos** (rutas protegidas para BUYER).
+* [x] Tests unitarios e integración para catálogo, filtros y wishlist (6 test suites, 54 tests ✅).
+
+**Estado:** ✅ COMPLETADO
 
 ---
 
