@@ -20,11 +20,9 @@
 * [x] Implementación de **Registro** y **Autenticación segura** (JWT, contraseñas hasheadas con scrypt).
 * [x] Rutas de **autenticación** públicas (`/auth/register`, `/auth/login`).
 * [x] Middleware para **Autenticación** y **Autorización** basado en roles.
-* [x] Tests unitarios para autenticación, servicios y use-cases (39 tests ✅).
+* [x] Tests unitarios para autenticación, servicios y use-cases.
 * [x] Rutas de usuarios protegidas con middleware de autenticación.
 * [x] Documentación completa (AUTHENTICATION.md, QUICK_START.md).
-
-**Estado:** ✅ COMPLETADO
 
 ---
 
@@ -36,7 +34,7 @@
 * [x] Casos de uso del Vendedor (CRUD) para **crear, editar y eliminar los diferentes artículos**.
 * [x] **Gestión de Stock**: Campo `stockQuantity` en `Product` y Casos de uso para actualizar el stock.
 * [x] Rutas Fastify para la gestión de productos, protegidas por el rol `Vendedor`.
-* [ ] Tests unitarios y de integración para la gestión de productos por parte del vendedor.
+* [x] Tests unitarios para la gestión de productos por parte del vendedor.
 
 ---
 
