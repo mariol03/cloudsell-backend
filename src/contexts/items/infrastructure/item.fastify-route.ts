@@ -5,6 +5,16 @@ import { UserRole } from "../../users/domain/user.entity";
 
 // Esquema de respuesta para obtener todos los items basado en ItemEntity
 const getItemsSchema = {
+  querystring: {
+    type: 'object',
+    properties: {
+      categoryId: { type: 'string' },
+      minPrice: { type: 'number' },
+      maxPrice: { type: 'number' },
+      page: { type: 'number' },
+      pageSize: { type: 'number' }
+    }
+  },
   response: {
     200: {
       type: 'array',

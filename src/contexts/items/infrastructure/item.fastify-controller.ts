@@ -111,7 +111,15 @@ export const getItemsController = async (
     reply: FastifyReply
 ) => {
     try {
-        const items = await itemGetAll.execute()
+        const q = request.query as any || {};
+        const filters = {
+            categoryId: q.categoryId as string | undefined,
+            minPrice: q.minPrice !== undefined ? Number(q.minPrice) : undefined,
+            maxPrice: q.maxPrice !== undefined ? Number(q.maxPrice) : undefined,
+            page: q.page !== undefined ? Number(q.page) : undefined,
+            pageSize: q.pageSize !== undefined ? Number(q.pageSize) : undefined,
+        };
+        const items = await itemGetAll.execute(filters)
         return reply.status(200).send(items.map(item => ({
             id: item.id,
             name: item.name,
