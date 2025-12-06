@@ -13,6 +13,7 @@ module.exports = {
     '^@shared/(.*)$': '<rootDir>/contexts/shared/$1',
     '^@users/(.*)$': '<rootDir>/contexts/users/$1',
     '^@items/(.*)$': '<rootDir>/contexts/items/$1',
+    '^@wishlist/(.*)$': '<rootDir>/contexts/items/wishlist/$1',
     '^@contexts/(.*)$': '<rootDir>/contexts/$1',
   },
   globals: {
