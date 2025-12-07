@@ -9,3 +9,8 @@ export const userRepositorySingleton = new UserInMemoryRepository();
 // Wishlist repository singleton (in-memory)
 import { WishlistInMemoryRepository } from '@items/wishlist/infrastructure/wishlist-inmemory.repository';
 export const wishlistRepositorySingleton = new WishlistInMemoryRepository();
+// Cart and Order in-memory repositories
+import { CartInMemoryRepository } from '@contexts/cart/infrastructure/cart-inmemory.repository';
+import { OrderInMemoryRepository } from '@contexts/cart/infrastructure/order-inmemory.repository';
+export const cartRepositorySingleton = new CartInMemoryRepository();
+export const orderRepositorySingleton = new OrderInMemoryRepository();
