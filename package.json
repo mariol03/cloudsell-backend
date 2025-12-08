@@ -18,6 +18,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
+    "@fastify/cors": "^11.1.0",
     "@fastify/swagger": "^9.6.1",
     "@fastify/swagger-ui": "^5.2.3",
     "fastify": "^5.6.2",
@@ -35,7 +36,9 @@
     "jest": "^30.2.0",
     "jiti": "^2.6.1",
     "ts-jest": "^29.4.6",
+    "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.1"
   }
