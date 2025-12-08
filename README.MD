@@ -49,8 +49,6 @@
 * [x] Entidad `Wishlist` y funcionalidad para **añadir artículos a una lista personalizada de deseos** (rutas protegidas para BUYER).
 * [x] Tests unitarios e integración para catálogo, filtros y wishlist (6 test suites, 54 tests ✅).
 
-**Estado:** ✅ COMPLETADO
-
 ---
 
 ### 🛒 Sprint 5: Módulo de Carrito de la Compra y Creación de Pedidos

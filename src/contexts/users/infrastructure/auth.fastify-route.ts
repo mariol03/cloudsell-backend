@@ -1,7 +1,5 @@
 import { FastifyInstance, FastifyPluginOptions } from "fastify";
 import { registerController, loginController } from "./auth.fastify-controller";
-import { RegisterDto } from "../application/use-cases/register/user-register.use-case";
-import { LoginDto } from "../application/use-cases/login/user-login.use-case";
 
 // Esquema para registro
 const registerSchema = {
