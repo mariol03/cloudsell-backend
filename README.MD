@@ -32,6 +32,7 @@
 * [x] Entidad `Item` con relación al `User` (Vendedor).
 * [x] Casos de uso del Vendedor (CRUD) para **crear, editar y eliminar los diferentes artículos**.
 * [x] **Gestión de Stock**: Campo `stockQuantity` en `Product` y Casos de uso para actualizar el stock.
+* [ ] Rutas Fastify para obtener los 3 productos con mejores valoraciones.
 * [x] Rutas Fastify para la gestión de productos, protegidas por el rol `Vendedor`.
 * [x] Tests unitarios para la gestión de productos por parte del vendedor.
 ---
