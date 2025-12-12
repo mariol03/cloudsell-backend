@@ -23,7 +23,6 @@
 * [x] Tests unitarios para autenticación, servicios y use-cases.
 * [x] Rutas de usuarios protegidas con middleware de autenticación.
 * [x] Documentación completa (AUTHENTICATION.md, QUICK_START.md).
-
 ---
 
 ### 🛍️ Sprint 3: Módulo de Vendedores y Gestión de Artículos
@@ -35,7 +34,6 @@
 * [x] **Gestión de Stock**: Campo `stockQuantity` en `Product` y Casos de uso para actualizar el stock.
 * [x] Rutas Fastify para la gestión de productos, protegidas por el rol `Vendedor`.
 * [x] Tests unitarios para la gestión de productos por parte del vendedor.
-
 ---
 
 ### 🔎 Sprint 4: Módulo de Catálogo, Búsqueda y Lista de Deseos
@@ -48,7 +46,6 @@
 * [x] Filtros avanzados (por categoría, rango de precio, paginación) - implementados con query params.
 * [x] Entidad `Wishlist` y funcionalidad para **añadir artículos a una lista personalizada de deseos** (rutas protegidas para BUYER).
 * [x] Tests unitarios e integración para catálogo, filtros y wishlist (6 test suites, 54 tests ✅).
-
 ---
 
 ### 🛒 Sprint 5: Módulo de Carrito de la Compra y Creación de Pedidos
@@ -60,7 +57,6 @@
 * [ ] Entidad `Order` (Pedido) y `OrderItem` (detalle de la compra).
 * [ ] Caso de uso para **crear un `Order`** a partir del `Cart` (Inicio de la revisión del pedido).
 * [ ] Rutas Fastify para el carrito y la creación inicial del pedido.
-
 ---
 
 ### 💳 Sprint 6: Módulo de Pago y Gestión de Pedidos/Stock
@@ -71,7 +67,6 @@
 * [ ] **Actualización Automática de Stock**: Implementar la lógica para gestionar la cantidad del stock con **actualizaciones automáticas tras una venta**.
 * [ ] **Listado de Pedidos (Comprador)**: Acceder a un listado de los pedidos que ha creado el usuario.
 * [ ] Casos de uso para actualizar el estado de los pedidos.
-
 ---
 
 ### 📊 Sprint 7: Notificaciones y Reportes
@@ -82,7 +77,6 @@
 * [ ] Lógica para generar **notificaciones automáticas sobre las ventas** de los diversos productos para el vendedor.
 * [ ] Casos de uso para **obtener acceso a estadísticas y reportes detallados sobre las ventas** para el vendedor.
 * [ ] *Opcional:* Stubs para las consideraciones adicionales (Notificaciones Push/SMS, Integración con RRSS).
-
 ---
 
 ### 🧪 Sprint 8: Pruebas Finales, Optimización y Despliegue
