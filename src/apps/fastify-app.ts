@@ -8,19 +8,11 @@ import { swaggerOptions } from "../openapi";
 import cors from "@fastify/cors";
 import { itemRoutes } from "@/contexts/items/infrastructure/item.fastify-route";
 import { imageRoutes } from "@/contexts/images/infrastructure/image.fastify-route";
+import { pinoLogger } from "@/contexts/shared/infrastructure/logger/singleton.logger";
 
 // registrar plugins y rutas
 export const app = fastify({
-    logger: {
-        transport: {
-            target: "pino-pretty",
-            options: {
-                colorize: true,
-                translateTime: "SYS:standard",
-                ignore: "pid,hostname",
-            },
-        },
-    },
+    logger: pinoLogger.instance,
     ajv: { plugins: [require("@fastify/multipart").ajvFilePlugin] },
 });
 
