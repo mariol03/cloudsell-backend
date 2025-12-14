@@ -1,5 +1,10 @@
 import { Client, ClientOptions } from "minio";
-import { MINIO_ENDPOINT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY } from "config";
+import {
+    MINIO_ENDPOINT,
+    MINIO_ACCESS_KEY,
+    MINIO_SECRET_KEY,
+    MINIO_PORT,
+} from "config";
 
 class UploadedFile {
     constructor(
@@ -16,6 +21,7 @@ export class MinioClient {
             endPoint: MINIO_ENDPOINT,
             accessKey: MINIO_ACCESS_KEY,
             secretKey: MINIO_SECRET_KEY,
+            port: MINIO_PORT,
             useSSL: false,
         };
         this.client = new Client(options);

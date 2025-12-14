@@ -7,3 +7,7 @@ export const MINIO_ACCESS_KEY: string =
     process.env.MINIO_ACCESS_KEY ?? "minioadmin";
 export const MINIO_SECRET_KEY: string =
     process.env.MINIO_SECRET_KEY ?? "minioadmin";
+export const MINIO_PORT: number = parseInt(
+    process.env.MINIO_PORT ?? "9000",
+    10,
+);
