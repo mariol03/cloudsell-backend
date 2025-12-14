@@ -52,9 +52,18 @@ export class MinioClient {
     }
 
     async downloadFile(bucketName: string, fileName: string): Promise<Buffer> {
-        const data = await this.client.getObject(bucketName, fileName);
-        const buffer = await data.read();
-        return buffer;
+        try {
+            const data = await this.client.getObject(bucketName, fileName);
+            const chunks: Buffer[] = [];
+            for await (const chunk of data) {
+                chunks.push(chunk);
+            }
+            return Buffer.concat(chunks);
+        } catch (error) {
+            if (error instanceof Error)
+                logger.error(`Error descargando archivo: ${error.message}`);
+            throw error;
+        }
     }
 
     async deleteFile(bucketName: string, fileName: string): Promise<void> {
