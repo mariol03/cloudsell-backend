@@ -12,7 +12,18 @@ import { pinoLogger } from "@/contexts/shared/infrastructure/logger/singleton.lo
 
 // registrar plugins y rutas
 export const app = fastify({
-    logger: pinoLogger.instance,
+    logger: {
+        // ... tu configuración existente ...
+        level: process.env.LOG_LEVEL || "info",
+        transport: {
+            target: "pino-pretty",
+            options: {
+                colorize: true,
+                translateTime: "SYS:standard",
+                ignore: "pid,hostname",
+            },
+        },
+    },
     ajv: { plugins: [require("@fastify/multipart").ajvFilePlugin] },
 });
 
