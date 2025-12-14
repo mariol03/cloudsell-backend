@@ -1,5 +1,8 @@
-import { ItemRepository } from "../domain/item.repository";
-import { itemRepositorySingleton, categoryRepositorySingleton } from "@shared/infrastructure/in-memory-singletons";
+// import { ItemRepository } from "../domain/item.repository";
+import {
+    itemRepositorySingleton,
+    categoryRepositorySingleton,
+} from "@shared/infrastructure/in-memory-singletons";
 import { ItemCreateUseCase } from "../application/use-cases/create/item-create.use-case";
 import { ItemDeleteUseCase } from "../application/use-cases/delete/item-delete.use-case";
 import { ItemGetAllCase } from "../application/use-cases/get-all/item-get-all.use-case";
@@ -30,88 +33,94 @@ const itemGetAll = new ItemGetAllCase(itemRepository);
 const itemGetById = new ItemGetByIdCase(itemRepository);
 const itemGetByName = new ItemGetByNameCase(itemRepository);
 const itemUpdate = new ItemUpdateUseCase(itemRepository);
-const itemAddCategory = new AddCategoryToItemUseCase(itemRepository,categoryRepository);
-const itemDeleteCategory = new DeleteCategoryUseCase(itemRepository,categoryRepository);
+const itemAddCategory = new AddCategoryToItemUseCase(
+    itemRepository,
+    categoryRepository,
+);
+const itemDeleteCategory = new DeleteCategoryUseCase(
+    itemRepository,
+    categoryRepository,
+);
 
 export const createItemController = async (
-    request: FastifyRequest<{Body: ItemCreateDto}>,
-    reply: FastifyReply
+    request: FastifyRequest<{ Body: ItemCreateDto }>,
+    reply: FastifyReply,
 ) => {
     try {
-        const item = await itemCreate.execute(request.body)
+        const item = await itemCreate.execute(request.body);
         return reply.status(201).send({
             id: item.id,
             name: item.name,
-            description: item.description
-        })
+            description: item.description,
+        });
     } catch (error: unknown) {
         if (error instanceof ItemAlreadyExistsException) {
-            return reply.status(422).send({message: error.message})
+            return reply.status(422).send({ message: error.message });
         }
         if (error instanceof InvalidItemDataException) {
-            return reply.status(422).send({message:error.message})
+            return reply.status(422).send({ message: error.message });
         }
-        return reply.status(500).send({message:"Internal server error"})
+        return reply.status(500).send({ message: "Internal server error" });
     }
-}
+};
 
 export const deleteItemController = async (
-    request: FastifyRequest<{Body: ItemDeleteDto}>,
-    reply: FastifyReply
+    request: FastifyRequest<{ Body: ItemDeleteDto }>,
+    reply: FastifyReply,
 ) => {
-    try{
-        const item = await itemDelete.execute(request.body)
-        return reply.status(200).send(item)
+    try {
+        const item = await itemDelete.execute(request.body);
+        return reply.status(200).send(item);
     } catch (error) {
         if (error instanceof InvalidItemDataException) {
-            return reply.status(422).send(error.message)
+            return reply.status(422).send(error.message);
         }
         if (error instanceof ItemNotFoundException) {
-            return reply.status(422).send(error.message)
+            return reply.status(422).send(error.message);
         }
-        return reply.status(500).send({message:"Internal server error"})
+        return reply.status(500).send({ message: "Internal server error" });
     }
-}
+};
 
 export const getItemByIdController = async (
-    request: FastifyRequest<{Body: ItemGetByIdDto}>,
-    reply: FastifyReply
+    request: FastifyRequest<{ Body: ItemGetByIdDto }>,
+    reply: FastifyReply,
 ) => {
     try {
         const item = await itemGetById.execute(request.body);
-        return item
+        return item;
     } catch (error) {
         if (error instanceof ItemNotFoundException) {
-            return reply.status(422).send(error.message)
+            return reply.status(422).send(error.message);
         }
-        return reply.status(500).send({message:"Internal server error"})
+        return reply.status(500).send({ message: "Internal server error" });
     }
-}
+};
 
 export const getItemByNameController = async (
-    request: FastifyRequest<{Body: ItemGetByNameDto}>,
-    reply: FastifyReply
-) => { 
+    request: FastifyRequest<{ Body: ItemGetByNameDto }>,
+    reply: FastifyReply,
+) => {
     try {
         const item = await itemGetByName.execute(request.body);
-        return item
+        return item;
     } catch (error) {
         if (error instanceof InvalidItemDataException) {
-            return reply.status(422).send(error.message)
+            return reply.status(422).send(error.message);
         }
         if (error instanceof ItemNotFoundException) {
-            return reply.status(422).send(error.message)
+            return reply.status(422).send(error.message);
         }
-        return reply.status(500).send({message:"Internal server error"})
+        return reply.status(500).send({ message: "Internal server error" });
     }
-}
+};
 
 export const getItemsController = async (
     request: FastifyRequest,
-    reply: FastifyReply
+    reply: FastifyReply,
 ) => {
     try {
-        const q = request.query as any || {};
+        const q = (request.query as any) || {};
         const filters = {
             categoryId: q.categoryId as string | undefined,
             minPrice: q.minPrice !== undefined ? Number(q.minPrice) : undefined,
@@ -119,78 +128,83 @@ export const getItemsController = async (
             page: q.page !== undefined ? Number(q.page) : undefined,
             pageSize: q.pageSize !== undefined ? Number(q.pageSize) : undefined,
         };
-        const items = await itemGetAll.execute(filters)
-        return reply.status(200).send(items.map(item => ({
-            id: item.id,
-            name: item.name,
-            description: item.description,
-            price: item.price,
-            createdAt: item.createdAt,
-            updatedAt: item.updatedAt,
-            category: (item.category || []).map(cat => ({ id: cat.id, name: cat.name }))
-        })))
+        const items = await itemGetAll.execute(filters);
+        return reply.status(200).send(
+            items.map((item) => ({
+                id: item.id,
+                name: item.name,
+                description: item.description,
+                price: item.price,
+                createdAt: item.createdAt,
+                updatedAt: item.updatedAt,
+                category: (item.category || []).map((cat) => ({
+                    id: cat.id,
+                    name: cat.name,
+                })),
+            })),
+        );
     } catch (error: unknown) {
         console.error("Error retrieving items:", error);
-        return reply.status(500).send({message:"Internal server error"})
+        return reply.status(500).send({ message: "Internal server error" });
     }
-}
+};
 
 export const updateItemController = async (
-    request: FastifyRequest<{Body:ItemUpdateDto}>,
-    reply: FastifyReply
+    request: FastifyRequest<{ Body: ItemUpdateDto }>,
+    reply: FastifyReply,
 ) => {
     try {
-        const item = await itemUpdate.execute(request.body)
-        return reply.status(200).send(item)
+        const item = await itemUpdate.execute(request.body);
+        return reply.status(200).send(item);
     } catch (error) {
         if (error instanceof InvalidItemDataException) {
-            return reply.status(422).send({message:error.message})
+            return reply.status(422).send({ message: error.message });
         }
-        if (error instanceof ItemNotFoundException){
-            return reply.status(422).send({message:error.message})
+        if (error instanceof ItemNotFoundException) {
+            return reply.status(422).send({ message: error.message });
         }
-        return reply.status(500).send({message: "Internal server error"})
+        return reply.status(500).send({ message: "Internal server error" });
     }
-}
+};
 
 export const addCategoryToItemController = async (
-    request: FastifyRequest<{Body:AddCategoryDto}>,
-    reply: FastifyReply
+    request: FastifyRequest<{ Body: AddCategoryDto }>,
+    reply: FastifyReply,
 ) => {
-  try {
-    const updatedItem = await itemAddCategory.execute(request.body);
-    return reply.status(200).send(updatedItem);
-  } catch (error: unknown) {
-    if (error instanceof ItemNotFoundException) {
-      return reply.status(404).send({ message: error.message });
+    try {
+        const updatedItem = await itemAddCategory.execute(request.body);
+        return reply.status(200).send(updatedItem);
+    } catch (error: unknown) {
+        if (error instanceof ItemNotFoundException) {
+            return reply.status(404).send({ message: error.message });
+        }
+        if (error instanceof CategoryNotFoundException) {
+            return reply.status(404).send({ message: error.message });
+        }
+        if (error instanceof InvalidItemDataException) {
+            return reply.status(422).send({ message: error.message });
+        }
+        return reply.status(500).send({ message: "Internal server error" });
     }
-    if (error instanceof CategoryNotFoundException) {
-      return reply.status(404).send({ message: error.message });
-    }
-    if (error instanceof InvalidItemDataException) {
-      return reply.status(422).send({ message: error.message });
-    }
-    return reply.status(500).send({ message: "Internal server error" });
-  }
-}
+};
 
 export const deleteCategoryFromItemController = async (
-  request: FastifyRequest<{Body:DeleteCategoryDto}>,
-  reply: FastifyReply
+    request: FastifyRequest<{ Body: DeleteCategoryDto }>,
+    reply: FastifyReply,
 ) => {
-  try {
-    const updatedItem = await itemDeleteCategory.execute(request.body);
-    return reply.status(200).send(updatedItem);
-  } catch (error: unknown) {
-    if (error instanceof ItemNotFoundException) {
-      return reply.status(404).send({ message: error.message });
+    try {
+        const updatedItem = await itemDeleteCategory.execute(request.body);
+        return reply.status(200).send(updatedItem);
+    } catch (error: unknown) {
+        if (error instanceof ItemNotFoundException) {
+            return reply.status(404).send({ message: error.message });
+        }
+        if (error instanceof CategoryNotFoundException) {
+            return reply.status(404).send({ message: error.message });
+        }
+        if (error instanceof InvalidItemDataException) {
+            return reply.status(422).send({ message: error.message });
+        }
+        return reply.status(500).send({ message: "Internal server error" });
     }
-    if (error instanceof CategoryNotFoundException) {
-      return reply.status(404).send({ message: error.message });
-    }
-    if (error instanceof InvalidItemDataException) {
-      return reply.status(422).send({ message: error.message });
-    }
-    return reply.status(500).send({ message: "Internal server error" });
-  }
-}
+};
