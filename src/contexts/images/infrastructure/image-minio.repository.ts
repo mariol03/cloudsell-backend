@@ -1,13 +1,19 @@
-import { ImageRepository } from "../domain/image.repository";
-import { MinioClient } from "../../shared/infrastructure/minio/minio.client";
-import { getMinioClient } from "@/contexts/shared/infrastructure/minio/minio.singleton";
-import { ImageEntity } from "../domain/image.entity";
+import { ImageEntity } from "@images/domain/image.entity";
+import { ImageRepository } from "@images/domain/image.repository";
+import { MinioClient } from "@shared/infrastructure/minio/minio.client";
+import { getMinioClient } from "@shared/infrastructure/minio/minio.singleton";
+import { getLogger } from "@shared/infrastructure/logger/singleton.logger";
+
+const logger = getLogger();
 
 export class MinIOImageRepository implements ImageRepository {
     private client: MinioClient;
 
     constructor() {
         this.client = getMinioClient();
+        this.client.createBucketIfNotExists("images").catch((error) => {
+            logger.error("Error creating bucket", error);
+        });
     }
 
     async create(image: ImageEntity): Promise<ImageEntity> {

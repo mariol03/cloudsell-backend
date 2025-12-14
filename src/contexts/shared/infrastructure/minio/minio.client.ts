@@ -5,6 +5,7 @@ import {
     MINIO_SECRET_KEY,
     MINIO_PORT,
 } from "config";
+import { getLogger } from "../logger/singleton.logger";
 
 class UploadedFile {
     constructor(
@@ -12,6 +13,8 @@ class UploadedFile {
         public fileName: string,
     ) {}
 }
+
+const logger = getLogger();
 
 export class MinioClient {
     private client: Client;
@@ -25,6 +28,18 @@ export class MinioClient {
             useSSL: false,
         };
         this.client = new Client(options);
+    }
+
+    async createBucket(bucketName: string): Promise<void> {
+        await this.client.makeBucket(bucketName);
+    }
+
+    async createBucketIfNotExists(bucketName: string): Promise<void> {
+        if (await this.client.bucketExists(bucketName)) {
+            logger.error(`Bucket ${bucketName} already exists`);
+        } else {
+            await this.client.makeBucket(bucketName);
+        }
     }
 
     async uploadFile(

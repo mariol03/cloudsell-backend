@@ -1,5 +1,5 @@
-import { ImageEntity } from "../domain/image.entity";
-import { ImageRepository } from "../domain/image.repository";
+import { ImageEntity } from "@images/domain/image.entity";
+import { ImageRepository } from "@images/domain/image.repository";
 import Crypto from "crypto";
 
 export class ImageInMemoryRepository implements ImageRepository {
