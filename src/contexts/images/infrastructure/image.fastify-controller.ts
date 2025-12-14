@@ -6,8 +6,10 @@ import { UploadImageDTO } from "../application/use-cases/upload/dto/upload.image
 import { MultipartBody } from "./image.fastify-schemas";
 import { DownloadImageDto } from "../application/use-cases/download/dto/download-image.dto";
 import { DownloadImageUseCase } from "../application/use-cases/download/download-image.use-case";
+import { MinIOImageRepository } from "./image-minio.repository";
 
-const imageRepository: ImageRepository = new ImageInMemoryRepository();
+// const imageRepository: ImageRepository = new ImageInMemoryRepository();
+const imageRepository: ImageRepository = new MinIOImageRepository();
 const uploadImageUseCase = new UploadImageUseCase(imageRepository);
 const downloadImageUseCase = new DownloadImageUseCase(imageRepository);
 
