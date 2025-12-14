@@ -12,7 +12,7 @@ export class MinIOImageRepository implements ImageRepository {
     constructor() {
         this.client = getMinioClient();
         this.client.createBucketIfNotExists("images").catch((error) => {
-            logger.error("Error creating bucket", error);
+            logger.error("Error creating bucket");
         });
     }
 
