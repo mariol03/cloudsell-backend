@@ -1,0 +1,84 @@
+import { FastifyReply, FastifyRequest } from "fastify";
+import { UploadImageUseCase } from "../application/use-cases/upload/upload.image.use-case";
+import { ImageRepository } from "../domain/image.repository";
+import { ImageInMemoryRepository } from "./image-inmemory.repository";
+import { UploadImageDTO } from "../application/use-cases/upload/dto/upload.image.dto";
+import { MultipartBody } from "./image.fastify-schemas";
+import { DownloadImageDto } from "../application/use-cases/download/dto/download-image.dto";
+import { DownloadImageUseCase } from "../application/use-cases/download/download-image.use-case";
+
+const imageRepository: ImageRepository = new ImageInMemoryRepository();
+const uploadImageUseCase = new UploadImageUseCase(imageRepository);
+const downloadImageUseCase = new DownloadImageUseCase(imageRepository);
+
+export const uploadImageController = async (
+    request: FastifyRequest,
+    reply: FastifyReply,
+) => {
+    try {
+        // Obtener el fichero cargado en el request
+        const file = request.body as unknown as MultipartBody;
+
+        // Validar el tipo de archivo
+        const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
+        if (!allowedMimeTypes.includes(file.image.mimetype)) {
+            return reply
+                .status(400)
+                .send({ error: "Only image files are allowed" });
+        }
+
+        // Validar el tamaño del archivo
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        const buffer = await file.image.toBuffer();
+        if (buffer.length > maxSize) {
+            return reply
+                .status(400)
+                .send({ error: "File size exceeds the limit" });
+        }
+
+        // Convertir el request a DTO
+        const dto: UploadImageDTO = {
+            name: file.name.value,
+            buffer,
+            filename: file.image.filename,
+            mimetype: file.image.mimetype,
+        };
+
+        // Ejecutar el caso de uso de carga de imagen
+        const newImage = await uploadImageUseCase.execute(dto);
+
+        // Devolver la respuesta
+        return reply.status(201).send(newImage);
+    } catch (error) {
+        console.error(error);
+        return reply.status(500).send({ error: "Internal Server Error" });
+    }
+};
+
+export const downloadImageController = async (
+    request: FastifyRequest<{ Params: DownloadImageDto }>,
+    reply: FastifyReply,
+) => {
+    try {
+        console.log(request.params);
+
+        const image = await downloadImageUseCase.execute(request.params);
+
+        if (!image) {
+            return reply.status(404).send({ error: "Image not found" });
+        }
+
+        const buffer = image.data;
+        const filename = image.alt;
+
+        reply.header("Content-Type", "image/jpeg");
+        reply.header(
+            "Content-Disposition",
+            `attachment; filename="${filename}"`,
+        );
+        reply.send(buffer);
+    } catch (error) {
+        console.error(error);
+        return reply.status(500).send({ error: "Internal Server Error" });
+    }
+};
