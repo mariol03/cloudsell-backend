@@ -7,6 +7,7 @@ import swaggerUi from "@fastify/swagger-ui";
 import { swaggerOptions } from "../openapi";
 import cors from "@fastify/cors";
 import { itemRoutes } from "@/contexts/items/infrastructure/item.fastify-route";
+import { imageRoutes } from "@/contexts/images/infrastructure/image.fastify-route";
 
 // registrar plugins y rutas
 export const app = fastify({
@@ -19,6 +20,16 @@ export const app = fastify({
                 ignore: "pid,hostname",
             },
         },
+    },
+    ajv: { plugins: [require("@fastify/multipart").ajvFilePlugin] },
+});
+
+// Configurar multipart
+app.register(require("@fastify/multipart"), {
+    attachFieldsToBody: true, // Importante para recibir el fichero en el body
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB
+        files: 1, // Permitir solo un archivo
     },
 });
 
@@ -64,6 +75,7 @@ app.register(healthRoutes, { prefix: "/health" });
 app.register(authRoutes, { prefix: "/auth" });
 // app.register(userRoutes, { prefix: "/users" });
 app.register(itemRoutes, { prefix: "/items" });
+app.register(imageRoutes, { prefix: "/images" });
 
 // Manejo de rutas no encontradas (404)
 app.setNotFoundHandler((request, reply) => {
