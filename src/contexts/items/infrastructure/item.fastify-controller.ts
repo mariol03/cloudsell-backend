@@ -24,6 +24,7 @@ import { DeleteCategoryDto } from "../application/use-cases/delete-category/dto/
 import { DeleteCategoryUseCase } from "../application/use-cases/delete-category/delete-category.use-case";
 import { AddCategoryToItemUseCase } from "../application/use-cases/add-category/add-category.use-case";
 import { CategoryRepository } from "@items/category/domain/category.respository";
+import { ItemRepository } from "@items/domain/item.repository";
 
 const itemRepository: ItemRepository = itemRepositorySingleton;
 const categoryRepository: CategoryRepository = categoryRepositorySingleton;
