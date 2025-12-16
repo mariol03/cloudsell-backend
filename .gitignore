@@ -3,3 +3,4 @@ pnpm-lock.yaml
 dist
 package-lock.json
 .env
+IMAGES_ROADMAP.md

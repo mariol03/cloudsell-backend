@@ -2,7 +2,14 @@ FROM node:22-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-COPY . /app
+
+COPY src /app/src
+COPY package.json /app/package.json
+COPY pnpm-lock.yaml /app/pnpm-lock.yaml
+COPY test-auth.sh /app/test-auth.sh
+COPY tsconfig.json /app/tsconfig.json
+COPY .env /app/.env
+
 WORKDIR /app
 
 FROM base AS prod-deps
