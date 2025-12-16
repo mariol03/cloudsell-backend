@@ -36,8 +36,7 @@
             "@items/*": ["contexts/items/*"],
             "@shared/*": ["contexts/shared/*"],
             "@users/*": ["contexts/users/*"],
-            "@images/*": ["contexts/images/*"],
-            "@wishlist/*": ["contexts/items/wishlist/*"]
+            "@images/*": ["contexts/images/*"]
         } /* Specify a set of entries that re-map imports to additional lookup locations. */,
         // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
         // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
