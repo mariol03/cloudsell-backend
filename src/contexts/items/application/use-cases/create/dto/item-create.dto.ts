@@ -1,5 +1,6 @@
 export interface ItemCreateDto {
     name: string;
-    description?: string;
-    price?: number;
+    description: string;
+    price: number;
+    image: string;
 }

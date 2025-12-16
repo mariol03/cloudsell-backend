@@ -12,17 +12,26 @@ export class ItemEntity extends BaseEntity {
      */
     description: string;
 
+    image: string;
+
     /**
-     * Precio del ítem (opcional)
+     * Precio del ítem
      */
-    price?: number;
+    price: number;
 
     category?: Array<CategoryEntity>;
 
-    constructor(name: string, description: string) {
+    constructor(
+        name: string,
+        description: string,
+        image: string,
+        price: number,
+    ) {
         super();
         this.name = name;
         this.description = description;
+        this.image = image;
+        this.price = price;
     }
 
     addCategory(category: CategoryEntity) {
@@ -36,6 +45,6 @@ export class ItemEntity extends BaseEntity {
         if (!this.category) {
             return;
         }
-        this.category = this.category.filter(cat => cat.id !== category.id);
+        this.category = this.category.filter((cat) => cat.id !== category.id);
     }
 }

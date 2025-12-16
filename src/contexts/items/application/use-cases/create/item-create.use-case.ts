@@ -7,25 +7,35 @@ import { ItemInMemoryRepository } from "@items/infrastructure/item-inmemory.repo
 import { ItemCreateDto } from "./dto/item-create.dto";
 
 export class ItemCreateUseCase extends BaseUseCase {
-  private readonly itemRepository: ItemRepository;
+    private readonly itemRepository: ItemRepository;
 
-  constructor(itemRepository?: ItemRepository) {
-    super();
-    this.itemRepository = itemRepository || new ItemInMemoryRepository();
-  }
-
-  async execute(request: ItemCreateDto): Promise<ItemEntity> {
-    if (!request?.name || !request?.description) {
-      throw new InvalidItemDataException();
-    }
-    
-    const existingItem = await this.itemRepository.findByName(request.name);
-    if (existingItem) {
-      throw new ItemAlreadyExistsException("name", request.name);
+    constructor(itemRepository?: ItemRepository) {
+        super();
+        this.itemRepository = itemRepository || new ItemInMemoryRepository();
     }
 
-    const newItem = new ItemEntity(request.name, request.description);
-    await this.itemRepository.create(newItem);
-    return newItem;
-  }
+    async execute(request: ItemCreateDto): Promise<ItemEntity> {
+        if (
+            !request?.name ||
+            !request?.description ||
+            !request?.image ||
+            !request?.price
+        ) {
+            throw new InvalidItemDataException();
+        }
+
+        const existingItem = await this.itemRepository.findByName(request.name);
+        if (existingItem) {
+            throw new ItemAlreadyExistsException("name", request.name);
+        }
+
+        const newItem = new ItemEntity(
+            request.name,
+            request.description,
+            request.image,
+            request.price,
+        );
+        await this.itemRepository.create(newItem);
+        return newItem;
+    }
 }
