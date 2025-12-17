@@ -36,7 +36,7 @@ export class MinioClient {
 
     async createBucketIfNotExists(bucketName: string): Promise<void> {
         if (await this.client.bucketExists(bucketName)) {
-            logger.error(`Bucket ${bucketName} already exists`);
+            logger.info(`Bucket ${bucketName} already exists`);
         } else {
             await this.client.makeBucket(bucketName);
         }
