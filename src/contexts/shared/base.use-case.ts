@@ -4,5 +4,5 @@ export abstract class BaseUseCase {
      * @param request - El objeto de solicitud que contiene los datos necesarios para ejecutar el caso de uso.
      * @returns Una promesa que resuelve con el resultado del caso de uso o void si no hay resultado.
      */
-    abstract execute(request?: unknown): Promise<unknown>;
+    abstract execute(request?: unknown, headers?: unknown): Promise<unknown>;
 }

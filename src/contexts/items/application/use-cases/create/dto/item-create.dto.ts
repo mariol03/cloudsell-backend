@@ -3,4 +3,5 @@ export interface ItemCreateDto {
     description: string;
     price: number;
     image: string;
+    user: string;
 }

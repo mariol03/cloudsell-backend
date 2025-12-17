@@ -2,6 +2,7 @@
 import {
     itemRepositorySingleton,
     categoryRepositorySingleton,
+    userRepositorySingleton,
 } from "@shared/infrastructure/in-memory-singletons";
 import { ItemCreateUseCase } from "../application/use-cases/create/item-create.use-case";
 import { ItemDeleteUseCase } from "../application/use-cases/delete/item-delete.use-case";
@@ -25,10 +26,13 @@ import { DeleteCategoryUseCase } from "../application/use-cases/delete-category/
 import { AddCategoryToItemUseCase } from "../application/use-cases/add-category/add-category.use-case";
 import { CategoryRepository } from "@items/category/domain/category.respository";
 import { ItemRepository } from "@items/domain/item.repository";
+import { UserNotFoundException } from "@/contexts/users/domain/exceptions/user-not-found.exception";
+import { UserRepository } from "@/contexts/users/domain/user.repository";
 
 const itemRepository: ItemRepository = itemRepositorySingleton;
+const userRepository: UserRepository = userRepositorySingleton;
 const categoryRepository: CategoryRepository = categoryRepositorySingleton;
-const itemCreate = new ItemCreateUseCase(itemRepository);
+const itemCreate = new ItemCreateUseCase(itemRepository, userRepository);
 const itemDelete = new ItemDeleteUseCase(itemRepository);
 const itemGetAll = new ItemGetAllCase(itemRepository);
 const itemGetById = new ItemGetByIdCase(itemRepository);
@@ -48,7 +52,10 @@ export const createItemController = async (
     reply: FastifyReply,
 ) => {
     try {
-        const item = await itemCreate.execute(request.body);
+        const item = await itemCreate.execute(
+            request.body,
+            request.headers?.authorization,
+        );
         return reply.status(201).send({
             id: item.id,
             name: item.name,
@@ -60,6 +67,9 @@ export const createItemController = async (
         }
         if (error instanceof InvalidItemDataException) {
             return reply.status(422).send({ message: error.message });
+        }
+        if (error instanceof UserNotFoundException) {
+            return reply.status(401).send({ message: error.message });
         }
         return reply.status(500).send({ message: "Internal server error" });
     }

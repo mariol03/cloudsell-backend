@@ -72,9 +72,11 @@ export const createItemSchema = {
             name: { type: "string" },
             description: { type: "string" },
             price: { type: "number" },
+            image: { type: "string" },
+            userId: { type: "string" },
             // Agrega aquí otras propiedades requeridas para crear un item
         },
-        required: ["name", "description"],
+        required: ["name", "description", "price", "image"],
     },
     response: {
         201: {
