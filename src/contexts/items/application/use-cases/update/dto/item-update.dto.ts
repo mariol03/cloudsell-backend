@@ -3,4 +3,6 @@ export interface ItemUpdateDto {
     name?: string;
     description?: string;
     price?: number;
+    image?: string;
+    user?: string;
 }

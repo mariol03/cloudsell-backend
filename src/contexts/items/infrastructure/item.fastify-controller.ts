@@ -28,16 +28,17 @@ import { CategoryRepository } from "@items/category/domain/category.respository"
 import { ItemRepository } from "@items/domain/item.repository";
 import { UserNotFoundException } from "@/contexts/users/domain/exceptions/user-not-found.exception";
 import { UserRepository } from "@/contexts/users/domain/user.repository";
+import { UserUnauthorizedException } from "@/contexts/users/domain/exceptions/user-unauthorized.exception";
 
 const itemRepository: ItemRepository = itemRepositorySingleton;
 const userRepository: UserRepository = userRepositorySingleton;
 const categoryRepository: CategoryRepository = categoryRepositorySingleton;
 const itemCreate = new ItemCreateUseCase(itemRepository, userRepository);
-const itemDelete = new ItemDeleteUseCase(itemRepository);
+const itemDelete = new ItemDeleteUseCase(itemRepository, userRepository);
 const itemGetAll = new ItemGetAllCase(itemRepository);
 const itemGetById = new ItemGetByIdCase(itemRepository);
 const itemGetByName = new ItemGetByNameCase(itemRepository);
-const itemUpdate = new ItemUpdateUseCase(itemRepository);
+const itemUpdate = new ItemUpdateUseCase(itemRepository, userRepository);
 const itemAddCategory = new AddCategoryToItemUseCase(
     itemRepository,
     categoryRepository,
@@ -71,6 +72,9 @@ export const createItemController = async (
         if (error instanceof UserNotFoundException) {
             return reply.status(401).send({ message: error.message });
         }
+        if (error instanceof UserUnauthorizedException) {
+            return reply.status(401).send({ message: error.message });
+        }
         return reply.status(500).send({ message: "Internal server error" });
     }
 };
@@ -80,7 +84,10 @@ export const deleteItemController = async (
     reply: FastifyReply,
 ) => {
     try {
-        const item = await itemDelete.execute(request.body);
+        const item = await itemDelete.execute(
+            request.body,
+            request.headers?.authorization,
+        );
         return reply.status(200).send(item);
     } catch (error) {
         if (error instanceof InvalidItemDataException) {
@@ -88,6 +95,12 @@ export const deleteItemController = async (
         }
         if (error instanceof ItemNotFoundException) {
             return reply.status(422).send(error.message);
+        }
+        if (error instanceof UserUnauthorizedException) {
+            return reply.status(401).send({ message: error.message });
+        }
+        if (error instanceof UserNotFoundException) {
+            return reply.status(401).send({ message: error.message });
         }
         return reply.status(500).send({ message: "Internal server error" });
     }
@@ -140,20 +153,7 @@ export const getItemsController = async (
             pageSize: q.pageSize !== undefined ? Number(q.pageSize) : undefined,
         };
         const items = await itemGetAll.execute(filters);
-        return reply.status(200).send(
-            items.map((item) => ({
-                id: item.id,
-                name: item.name,
-                description: item.description,
-                price: item.price,
-                createdAt: item.createdAt,
-                updatedAt: item.updatedAt,
-                category: (item.category || []).map((cat) => ({
-                    id: cat.id,
-                    name: cat.name,
-                })),
-            })),
-        );
+        return reply.status(200).send(items);
     } catch (error: unknown) {
         console.error("Error retrieving items:", error);
         return reply.status(500).send({ message: "Internal server error" });
@@ -165,7 +165,10 @@ export const updateItemController = async (
     reply: FastifyReply,
 ) => {
     try {
-        const item = await itemUpdate.execute(request.body);
+        const item = await itemUpdate.execute(
+            request.body,
+            request.headers?.authorization,
+        );
         return reply.status(200).send(item);
     } catch (error) {
         if (error instanceof InvalidItemDataException) {

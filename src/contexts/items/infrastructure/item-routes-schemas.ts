@@ -20,8 +20,13 @@ export const getItemsSchema = {
                     name: { type: "string" },
                     description: { type: "string" },
                     price: { type: "number" },
+                    image: { type: "string" },
                     createdAt: { type: "string", format: "date-time" },
                     updatedAt: { type: "string", format: "date-time" },
+                    user: {
+                        type: "object",
+                        properties: { id: { type: "string" } },
+                    },
                     category: {
                         type: "array",
                         items: {
@@ -103,6 +108,8 @@ export const updateItemSchema = {
             name: { type: "string" },
             description: { type: "string" },
             price: { type: "number" },
+            image: { type: "string" },
+            user: { type: "string" },
             // El campo 'id' es requerido, los demás son opcionales según el DTO
         },
         required: ["id"],
@@ -129,6 +136,7 @@ export const deleteItemSchema = {
         type: "object",
         properties: {
             id: { type: "string" },
+            user: { type: "string" },
             // El campo 'id' es requerido para eliminar el item
         },
         required: ["id"],

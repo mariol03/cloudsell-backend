@@ -8,7 +8,7 @@ export class ItemEntity extends BaseEntity {
     image: string; // URL de la imagen del ítem
     price: number; // Precio del ítem
     category?: Array<CategoryEntity>; // Categorías asociadas al ítem
-    user?: UserEntity; // Usuario que creó el ítem
+    user: UserEntity; // Usuario que creó el ítem
 
     constructor(
         name: string,

@@ -26,17 +26,28 @@ export class ItemGetAllCase extends BaseUseCase {
 
         if (filters) {
             if (filters.categoryId) {
-                result = result.filter(i => (i.category || []).some(c => c.id === filters!.categoryId));
+                result = result.filter((i) =>
+                    (i.category || []).some(
+                        (c) => c.id === filters!.categoryId,
+                    ),
+                );
             }
             if (filters.minPrice !== undefined) {
-                result = result.filter(i => (i.price ?? 0) >= filters!.minPrice!);
+                result = result.filter(
+                    (i) => (i.price ?? 0) >= filters!.minPrice!,
+                );
             }
             if (filters.maxPrice !== undefined) {
-                result = result.filter(i => (i.price ?? 0) <= filters!.maxPrice!);
+                result = result.filter(
+                    (i) => (i.price ?? 0) <= filters!.maxPrice!,
+                );
             }
             // pagination
             const page = filters.page && filters.page > 0 ? filters.page : 1;
-            const pageSize = filters.pageSize && filters.pageSize > 0 ? filters.pageSize : result.length;
+            const pageSize =
+                filters.pageSize && filters.pageSize > 0
+                    ? filters.pageSize
+                    : result.length;
             const start = (page - 1) * pageSize;
             result = result.slice(start, start + pageSize);
         }
