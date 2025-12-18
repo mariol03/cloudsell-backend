@@ -10,6 +10,8 @@ import { UserInMemoryRepository } from "@/contexts/users/infrastructure/user-inm
 import { UserNotFoundException } from "@/contexts/users/domain/exceptions/user-not-found.exception";
 import { UserEntity } from "@/contexts/users/domain/user.entity";
 import { JwtTokenService } from "@/contexts/users/infrastructure/jwt-token.service";
+import { getLogger } from "@/contexts/shared/infrastructure/logger/singleton.logger";
+import { isNumberObject } from "util/types";
 
 export class ItemCreateUseCase extends BaseUseCase {
     private readonly itemRepository: ItemRepository;
@@ -29,12 +31,11 @@ export class ItemCreateUseCase extends BaseUseCase {
         authorizationHeader: string | undefined,
     ): Promise<ItemEntity> {
         let user: UserEntity | undefined;
-
         if (
             !request?.name ||
             !request?.description ||
             !request?.image ||
-            !request?.price
+            isNumberObject(request?.price)
         ) {
             throw new InvalidItemDataException();
         }

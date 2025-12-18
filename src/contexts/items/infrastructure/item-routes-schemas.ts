@@ -179,47 +179,44 @@ export const getItemByNameSchema = {
     },
 };
 
-// Esquema para agregar una categoría a un item
-export const addCategorySchema = {
-    body: {
+export const getItemByUserIdSchema = {
+    params: {
         type: "object",
         properties: {
-            item: {
-                type: "object",
-                properties: {
-                    id: { type: "string" },
-                },
-                required: ["id"],
-            },
-            category: {
-                type: "object",
-                properties: {
-                    id: { type: "string" },
-                },
-                required: ["id"],
-            },
+            userId: { type: "string" },
         },
-        required: ["item", "category"],
+        required: ["userId"],
     },
     response: {
         200: {
-            type: "object",
-            properties: {
-                id: { type: "string" },
-                name: { type: "string" },
-                description: { type: "string" },
-                price: { type: "number" },
-                createdAt: { type: "string", format: "date-time" },
-                updatedAt: { type: "string", format: "date-time" },
-                category: {
-                    type: "array",
-                    items: {
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    id: { type: "string" },
+                    name: { type: "string" },
+                    description: { type: "string" },
+                    price: { type: "number" },
+                    image: { type: "string" },
+                    createdAt: { type: "string", format: "date-time" },
+                    updatedAt: { type: "string", format: "date-time" },
+                    category: {
+                        type: "array",
+                        items: {
+                            type: "object",
+                            properties: {
+                                id: { type: "string" },
+                                name: { type: "string" },
+                            },
+                        },
+                    },
+                    user: {
                         type: "object",
                         properties: {
                             id: { type: "string" },
-                            name: { type: "string" },
                         },
                     },
+                    // Agrega aquí otras propiedades relevantes del ItemEntity si existen
                 },
             },
         },

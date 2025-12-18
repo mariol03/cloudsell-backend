@@ -9,21 +9,21 @@ import { ItemGetByIdDto } from "./dto/item-get-by-id.dto";
 export class ItemGetByIdCase extends BaseUseCase {
     private readonly itemRepository: ItemRepository;
 
-    constructor(itemRepository?:ItemRepository) {
+    constructor(itemRepository?: ItemRepository) {
         super();
         this.itemRepository = itemRepository || new ItemInMemoryRepository();
     }
 
-    async execute(request?: ItemGetByIdDto): Promise<ItemEntity | null> {
-        if (!request?.id) {
+    async execute(params?: ItemGetByIdDto): Promise<ItemEntity | null> {
+        if (!params?.id) {
             throw new InvalidItemDataException();
         }
 
-        const item = await this.itemRepository.findById(request.id);
-        if (!item){
-            throw new ItemNotFoundException("Id",request.id)
+        const item = await this.itemRepository.findById(params.id);
+        if (!item) {
+            throw new ItemNotFoundException("Id", params.id);
         }
-        
+
         return item;
     }
 }

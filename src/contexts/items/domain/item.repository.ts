@@ -6,5 +6,6 @@ export interface ItemRepository {
     delete(item: ItemEntity): Promise<void>;
     findByName(name: string): Promise<ItemEntity | null>;
     findById(id: string): Promise<ItemEntity | null>;
+    findByUserId(userId: string): Promise<Array<ItemEntity>>;
     findAll(): Promise<Array<ItemEntity>>;
 }

@@ -29,6 +29,8 @@ import { ItemRepository } from "@items/domain/item.repository";
 import { UserNotFoundException } from "@/contexts/users/domain/exceptions/user-not-found.exception";
 import { UserRepository } from "@/contexts/users/domain/user.repository";
 import { UserUnauthorizedException } from "@/contexts/users/domain/exceptions/user-unauthorized.exception";
+import { ItemGetByUserIdUseCase } from "../application/use-cases/get-by-userid/item-get-by-userid.use-case";
+import { ItemGetByUserIdDto } from "../application/use-cases/get-by-userid/dto/item-get-by-userid.dto";
 
 const itemRepository: ItemRepository = itemRepositorySingleton;
 const userRepository: UserRepository = userRepositorySingleton;
@@ -37,6 +39,7 @@ const itemCreate = new ItemCreateUseCase(itemRepository, userRepository);
 const itemDelete = new ItemDeleteUseCase(itemRepository, userRepository);
 const itemGetAll = new ItemGetAllCase(itemRepository);
 const itemGetById = new ItemGetByIdCase(itemRepository);
+const itemGetByUserId = new ItemGetByUserIdUseCase(itemRepository);
 const itemGetByName = new ItemGetByNameCase(itemRepository);
 const itemUpdate = new ItemUpdateUseCase(itemRepository, userRepository);
 const itemAddCategory = new AddCategoryToItemUseCase(
@@ -107,13 +110,34 @@ export const deleteItemController = async (
 };
 
 export const getItemByIdController = async (
-    request: FastifyRequest<{ Body: ItemGetByIdDto }>,
+    request: FastifyRequest<{ Params: ItemGetByIdDto }>,
     reply: FastifyReply,
 ) => {
     try {
-        const item = await itemGetById.execute(request.body);
+        const item = await itemGetById.execute(request.params);
         return item;
     } catch (error) {
+        if (error instanceof ItemNotFoundException) {
+            return reply.status(404).send(error.message);
+        }
+        if (error instanceof InvalidItemDataException) {
+            return reply.status(422).send({ message: error.message });
+        }
+        return reply.status(500).send({ message: "Internal server error" });
+    }
+};
+
+export const getItemByNameController = async (
+    request: FastifyRequest<{ Params: ItemGetByNameDto }>,
+    reply: FastifyReply,
+) => {
+    try {
+        const item = await itemGetByName.execute(request.params);
+        return item;
+    } catch (error) {
+        if (error instanceof InvalidItemDataException) {
+            return reply.status(422).send(error.message);
+        }
         if (error instanceof ItemNotFoundException) {
             return reply.status(422).send(error.message);
         }
@@ -121,18 +145,15 @@ export const getItemByIdController = async (
     }
 };
 
-export const getItemByNameController = async (
-    request: FastifyRequest<{ Body: ItemGetByNameDto }>,
+export const getItemsByUserIdController = async (
+    request: FastifyRequest<{ Params: ItemGetByUserIdDto }>,
     reply: FastifyReply,
 ) => {
     try {
-        const item = await itemGetByName.execute(request.body);
+        const item = await itemGetByUserId.execute(request.params);
         return item;
     } catch (error) {
         if (error instanceof InvalidItemDataException) {
-            return reply.status(422).send(error.message);
-        }
-        if (error instanceof ItemNotFoundException) {
             return reply.status(422).send(error.message);
         }
         return reply.status(500).send({ message: "Internal server error" });

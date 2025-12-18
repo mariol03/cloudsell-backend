@@ -8,6 +8,7 @@ import {
     updateItemController,
     addCategoryToItemController,
     deleteCategoryFromItemController,
+    getItemsByUserIdController,
 } from "./item.fastify-controller";
 import {
     authenticateMiddleware,
@@ -20,12 +21,11 @@ import {
     UpdateItemRoute,
 } from "./item-routes-interfaces";
 import {
-    addCategorySchema,
     createItemSchema,
-    deleteCategorySchema,
     deleteItemSchema,
     getItemByIdSchema,
     getItemByNameSchema,
+    getItemByUserIdSchema,
     getItemsSchema,
     updateItemSchema,
 } from "./item-routes-schemas";
@@ -41,6 +41,11 @@ export const itemRoutes = async (fastify: FastifyInstance) => {
         "/name/:name",
         { schema: getItemByNameSchema },
         getItemByNameController,
+    );
+    fastify.get(
+        "/user/:userId",
+        { schema: getItemByUserIdSchema },
+        getItemsByUserIdController,
     );
     fastify.put<CreateItemRoute>(
         "/",
