@@ -1,3 +1,27 @@
+const itemSchema = {
+    id: { type: "string" },
+    name: { type: "string" },
+    description: { type: "string" },
+    price: { type: "number" },
+    image: { type: "string" },
+    createdAt: { type: "string", format: "date-time" },
+    updatedAt: { type: "string", format: "date-time" },
+    user: {
+        type: "object",
+        properties: { id: { type: "string" } },
+    },
+    category: {
+        type: "array",
+        items: {
+            type: "object",
+            properties: {
+                id: { type: "string" },
+                name: { type: "string" },
+            },
+        },
+    },
+};
+
 // Esquema de respuesta para obtener todos los items basado en ItemEntity
 export const getItemsSchema = {
     querystring: {
@@ -15,29 +39,7 @@ export const getItemsSchema = {
             type: "array",
             items: {
                 type: "object",
-                properties: {
-                    id: { type: "string" },
-                    name: { type: "string" },
-                    description: { type: "string" },
-                    price: { type: "number" },
-                    image: { type: "string" },
-                    createdAt: { type: "string", format: "date-time" },
-                    updatedAt: { type: "string", format: "date-time" },
-                    user: {
-                        type: "object",
-                        properties: { id: { type: "string" } },
-                    },
-                    category: {
-                        type: "array",
-                        items: {
-                            type: "object",
-                            properties: {
-                                id: { type: "string" },
-                                name: { type: "string" },
-                            },
-                        },
-                    },
-                },
+                properties: itemSchema,
             },
         },
     },
@@ -56,15 +58,7 @@ export const getItemByIdSchema = {
     response: {
         200: {
             type: "object",
-            properties: {
-                id: { type: "string" },
-                name: { type: "string" },
-                description: { type: "string" },
-                price: { type: "number" },
-                createdAt: { type: "string", format: "date-time" },
-                updatedAt: { type: "string", format: "date-time" },
-                // Agrega aquí otras propiedades relevantes del ItemEntity si existen
-            },
+            properties: itemSchema,
         },
     },
 };
@@ -86,15 +80,7 @@ export const createItemSchema = {
     response: {
         201: {
             type: "object",
-            properties: {
-                id: { type: "string" },
-                name: { type: "string" },
-                description: { type: "string" },
-                price: { type: "number" },
-                createdAt: { type: "string", format: "date-time" },
-                updatedAt: { type: "string", format: "date-time" },
-                // Agrega aquí otras propiedades relevantes del ItemEntity si existen
-            },
+            properties: itemSchema,
         },
     },
 };
@@ -117,15 +103,7 @@ export const updateItemSchema = {
     response: {
         200: {
             type: "object",
-            properties: {
-                id: { type: "string" },
-                name: { type: "string" },
-                description: { type: "string" },
-                price: { type: "number" },
-                createdAt: { type: "string", format: "date-time" },
-                updatedAt: { type: "string", format: "date-time" },
-                // Propiedades reflejando el modelo de ItemEntity
-            },
+            properties: itemSchema,
         },
     },
 };
@@ -166,15 +144,7 @@ export const getItemByNameSchema = {
     response: {
         200: {
             type: "object",
-            properties: {
-                id: { type: "string" },
-                name: { type: "string" },
-                description: { type: "string" },
-                price: { type: "number" },
-                createdAt: { type: "string", format: "date-time" },
-                updatedAt: { type: "string", format: "date-time" },
-                // Agrega aquí otras propiedades relevantes del ItemEntity si existen
-            },
+            properties: itemSchema,
         },
     },
 };
@@ -192,32 +162,7 @@ export const getItemByUserIdSchema = {
             type: "array",
             items: {
                 type: "object",
-                properties: {
-                    id: { type: "string" },
-                    name: { type: "string" },
-                    description: { type: "string" },
-                    price: { type: "number" },
-                    image: { type: "string" },
-                    createdAt: { type: "string", format: "date-time" },
-                    updatedAt: { type: "string", format: "date-time" },
-                    category: {
-                        type: "array",
-                        items: {
-                            type: "object",
-                            properties: {
-                                id: { type: "string" },
-                                name: { type: "string" },
-                            },
-                        },
-                    },
-                    user: {
-                        type: "object",
-                        properties: {
-                            id: { type: "string" },
-                        },
-                    },
-                    // Agrega aquí otras propiedades relevantes del ItemEntity si existen
-                },
+                properties: itemSchema,
             },
         },
     },
