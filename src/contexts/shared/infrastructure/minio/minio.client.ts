@@ -1,4 +1,4 @@
-import { Client, ClientOptions } from "minio";
+import { Client, ClientOptions, ItemBucketMetadata } from "minio";
 import {
     MINIO_ENDPOINT,
     MINIO_ACCESS_KEY,
@@ -11,6 +11,7 @@ class UploadedFile {
     constructor(
         public bucketName: string,
         public fileName: string,
+        public url: string,
     ) {}
 }
 
@@ -30,6 +31,32 @@ export class MinioClient {
         this.client = new Client(options);
     }
 
+    private async setPublicPolicy(bucketName: string): Promise<void> {
+        const policy = {
+            Version: "2012-10-17",
+            Statement: [
+                {
+                    Sid: "PublicRead",
+                    Effect: "Allow",
+                    Principal: { AWS: ["*"] }, // Acceso a todos
+                    Action: ["s3:GetObject"], // Solo lectura
+                    Resource: [`arn:aws:s3:::${bucketName}/*`], // Todos los archivos
+                },
+            ],
+        };
+
+        try {
+            await this.client.setBucketPolicy(
+                bucketName,
+                JSON.stringify(policy),
+            );
+            logger.info(`Política pública aplicada al bucket '${bucketName}'`);
+        } catch (error) {
+            logger.error(`Error aplicando política al bucket ${bucketName}:`);
+            throw error;
+        }
+    }
+
     async createBucket(bucketName: string): Promise<void> {
         await this.client.makeBucket(bucketName);
     }
@@ -40,15 +67,33 @@ export class MinioClient {
         } else {
             await this.client.makeBucket(bucketName);
         }
+
+        await this.setPublicPolicy(bucketName);
+    }
+
+    getPublicUrl(bucketName: string, fileName: string): string {
+        const protocol = "http"; // O https según tu config
+        // Asegúrate de que MINIO_ENDPOINT no tenga 'http://' delante en tu config, solo la IP/Dominio
+        return `${protocol}://${MINIO_ENDPOINT}:${MINIO_PORT}/${bucketName}/${fileName}`;
     }
 
     async uploadFile(
         bucketName: string,
         fileName: string,
         file: Buffer,
+        mimeType?: string,
     ): Promise<UploadedFile> {
-        await this.client.putObject(bucketName, fileName, file);
-        return new UploadedFile(bucketName, fileName);
+        const metadata: ItemBucketMetadata = mimeType
+            ? { "Content-Type": mimeType }
+            : {};
+        await this.client.putObject(
+            bucketName,
+            fileName,
+            file,
+            metadata as any,
+        );
+        const url = this.getPublicUrl(bucketName, fileName);
+        return new UploadedFile(bucketName, fileName, url);
     }
 
     async downloadFile(bucketName: string, fileName: string): Promise<Buffer> {

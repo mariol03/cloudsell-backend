@@ -17,12 +17,13 @@ export class MinIOImageRepository implements ImageRepository {
     }
 
     async create(image: ImageEntity): Promise<ImageEntity> {
-        const { fileName, bucketName } = await this.client.uploadFile(
+        const { url } = await this.client.uploadFile(
             "images",
             image.alt,
             image.data,
+            image.mimeType,
         );
-        return { ...image, url: `${bucketName}/${fileName}` };
+        return { ...image, url };
     }
 
     async findByUrl(url: string): Promise<ImageEntity | null> {

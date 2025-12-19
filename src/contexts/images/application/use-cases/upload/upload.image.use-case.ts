@@ -13,8 +13,8 @@ export class UploadImageUseCase extends BaseUseCase {
     }
 
     async execute(request: UploadImageDTO): Promise<ImageEntity> {
-        const { buffer, filename } = request;
-        const image = new ImageEntity("", filename, buffer);
+        const { buffer, filename, mimetype } = request;
+        const image = new ImageEntity("", filename, buffer, mimetype);
         const newImage = await this.imageRepository.create(image);
         return newImage;
     }
