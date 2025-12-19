@@ -3,5 +3,6 @@ export interface ItemCreateDto {
     description: string;
     price: number;
     image: string;
+    stock: number;
     user: string;
 }

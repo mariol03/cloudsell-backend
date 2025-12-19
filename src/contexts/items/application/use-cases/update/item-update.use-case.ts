@@ -10,6 +10,8 @@ import { UserRepository } from "@/contexts/users/domain/user.repository";
 import { UserNotFoundException } from "@/contexts/users/domain/exceptions/user-not-found.exception";
 import { JwtTokenService } from "@/contexts/users/infrastructure/jwt-token.service";
 import { UserEntity } from "@/contexts/users/domain/user.entity";
+import { getLogger } from "@/contexts/shared/infrastructure/logger/singleton.logger";
+import { isNumberObject } from "util/types";
 
 export class ItemUpdateUseCase implements BaseUseCase {
     private readonly itemRepository: ItemRepository;
@@ -27,20 +29,23 @@ export class ItemUpdateUseCase implements BaseUseCase {
         request: ItemUpdateDto,
         authorizationHeader: string | undefined,
     ): Promise<ItemEntity> {
+        const logger = getLogger();
         let user: UserEntity | undefined;
 
         if (
             !request?.name ||
             !request?.description ||
             !request?.image ||
-            !request?.price
+            isNumberObject(request?.price)
         ) {
+            logger.error("Invalid item data");
             throw new InvalidItemDataException();
         }
 
         // comprobar que el usuario existe
         if (!authorizationHeader) {
             if (!request?.user) {
+                logger.error("Invalid user data");
                 throw new InvalidItemDataException();
             }
             user = await this.userRepository.findById(request.user);
@@ -58,6 +63,7 @@ export class ItemUpdateUseCase implements BaseUseCase {
         }
 
         if (!request?.id) {
+            logger.error("Invalid item id");
             throw new InvalidItemDataException();
         }
         const item = await this.itemRepository.findById(request.id);
@@ -67,6 +73,7 @@ export class ItemUpdateUseCase implements BaseUseCase {
         if (request.name) item.name = request.name;
         if (request.description) item.description = request.description;
         if (request.price !== undefined) item.price = request.price;
+        if (request.stock !== undefined) item.stock = request.stock;
         await this.itemRepository.update(item);
         return item;
     }

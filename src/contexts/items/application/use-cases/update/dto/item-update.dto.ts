@@ -4,5 +4,6 @@ export interface ItemUpdateDto {
     description?: string;
     price?: number;
     image?: string;
+    stock?: number;
     user?: string;
 }

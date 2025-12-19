@@ -7,6 +7,7 @@ export class ItemEntity extends BaseEntity {
     description: string; // Descripción del ítem
     image: string; // URL de la imagen del ítem
     price: number; // Precio del ítem
+    stock: number; // Stock del ítem
     category?: Array<CategoryEntity>; // Categorías asociadas al ítem
     user: UserEntity; // Usuario que creó el ítem
 
@@ -15,6 +16,7 @@ export class ItemEntity extends BaseEntity {
         description: string,
         image: string,
         price: number,
+        stock: number,
         user: UserEntity,
     ) {
         super();
@@ -22,6 +24,7 @@ export class ItemEntity extends BaseEntity {
         this.description = description;
         this.image = image;
         this.price = price;
+        this.stock = stock;
         this.user = user;
     }
 

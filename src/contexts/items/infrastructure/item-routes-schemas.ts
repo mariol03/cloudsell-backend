@@ -3,6 +3,7 @@ const itemSchema = {
     name: { type: "string" },
     description: { type: "string" },
     price: { type: "number" },
+    stock: { type: "number" },
     image: { type: "string" },
     createdAt: { type: "string", format: "date-time" },
     updatedAt: { type: "string", format: "date-time" },
@@ -72,10 +73,11 @@ export const createItemSchema = {
             description: { type: "string" },
             price: { type: "number" },
             image: { type: "string" },
+            stock: { type: "number" },
             userId: { type: "string" },
             // Agrega aquí otras propiedades requeridas para crear un item
         },
-        required: ["name", "description", "price", "image"],
+        required: ["name", "description", "price", "image", "stock"],
     },
     response: {
         201: {
@@ -95,6 +97,7 @@ export const updateItemSchema = {
             description: { type: "string" },
             price: { type: "number" },
             image: { type: "string" },
+            stock: { type: "number" },
             user: { type: "string" },
             // El campo 'id' es requerido, los demás son opcionales según el DTO
         },

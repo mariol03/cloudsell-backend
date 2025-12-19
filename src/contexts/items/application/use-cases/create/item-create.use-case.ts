@@ -65,6 +65,7 @@ export class ItemCreateUseCase extends BaseUseCase {
             request.description,
             request.image,
             request.price,
+            request.stock,
             user,
         );
         await this.itemRepository.create(newItem);
