@@ -9,8 +9,7 @@ import { UserRepository } from "@/contexts/users/domain/user.repository";
 import { UserInMemoryRepository } from "@/contexts/users/infrastructure/user-inmemory.repository";
 import { UserNotFoundException } from "@/contexts/users/domain/exceptions/user-not-found.exception";
 import { UserEntity } from "@/contexts/users/domain/user.entity";
-import { JwtTokenService } from "@/contexts/users/infrastructure/jwt-token.service";
-import { getLogger } from "@/contexts/shared/infrastructure/logger/singleton.logger";
+import { JwtTokenService } from "@users/infrastructure/jwt-token/jwt-token.service";
 import { isNumberObject } from "util/types";
 
 export class ItemCreateUseCase extends BaseUseCase {

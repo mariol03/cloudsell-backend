@@ -1,6 +1,5 @@
 import fastify from "fastify";
 import { healthRoutes } from "../contexts/shared/infrastructure/health.fastify-route";
-import { authRoutes } from "../contexts/users/infrastructure/auth.fastify-route";
 import { userRoutes } from "../contexts/users/infrastructure/user.fastify-route";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
@@ -75,8 +74,7 @@ app.get("/openapi.json", async (request, reply) => {
 });
 
 app.register(healthRoutes, { prefix: "/health" });
-app.register(authRoutes, { prefix: "/auth" });
-// app.register(userRoutes, { prefix: "/users" });
+app.register(userRoutes, { prefix: "/auth" });
 app.register(itemRoutes, { prefix: "/items" });
 app.register(imageRoutes, { prefix: "/images" });
 

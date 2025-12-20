@@ -13,8 +13,8 @@ import {
 import {
     authenticateMiddleware,
     authorizeRole,
-} from "../../users/infrastructure/auth.middleware";
-import { UserRole } from "../../users/domain/user.entity";
+} from "@users/infrastructure/auth/auth.middleware";
+import { UserRole } from "@users/domain/user.entity";
 import {
     CreateItemRoute,
     DeleteItemRoute,

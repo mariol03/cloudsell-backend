@@ -5,11 +5,11 @@ import type { ItemRepository } from "@items/domain/item.repository";
 import { ItemInMemoryRepository } from "@items/infrastructure/item-inmemory.repository";
 import { InvalidItemDataException } from "@items/domain/exceptions/invalid-item-data.exception";
 import { ItemNotFoundException } from "@items/domain/exceptions/item-not-found.exception";
-import { UserEntity } from "@/contexts/users/domain/user.entity";
-import { UserRepository } from "@/contexts/users/domain/user.repository";
-import { UserInMemoryRepository } from "@/contexts/users/infrastructure/user-inmemory.repository";
-import { UserNotFoundException } from "@/contexts/users/domain/exceptions/user-not-found.exception";
-import { JwtTokenService } from "@/contexts/users/infrastructure/jwt-token.service";
+import { UserEntity } from "@users/domain/user.entity";
+import { UserRepository } from "@users/domain/user.repository";
+import { UserInMemoryRepository } from "@users/infrastructure/user-inmemory.repository";
+import { UserNotFoundException } from "@users/domain/exceptions/user-not-found.exception";
+import { JwtTokenService } from "@users/infrastructure/jwt-token/jwt-token.service";
 import { UserUnauthorizedException } from "@/contexts/users/domain/exceptions/user-unauthorized.exception";
 
 export class ItemDeleteUseCase extends BaseUseCase {

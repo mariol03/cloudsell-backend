@@ -6,11 +6,11 @@ import type { ItemRepository } from "@items/domain/item.repository";
 import { ItemInMemoryRepository } from "@items/infrastructure/item-inmemory.repository";
 import { ItemUpdateDto } from "./dto/item-update.dto";
 import { UserInMemoryRepository } from "@/contexts/users/infrastructure/user-inmemory.repository";
-import { UserRepository } from "@/contexts/users/domain/user.repository";
-import { UserNotFoundException } from "@/contexts/users/domain/exceptions/user-not-found.exception";
-import { JwtTokenService } from "@/contexts/users/infrastructure/jwt-token.service";
-import { UserEntity } from "@/contexts/users/domain/user.entity";
-import { getLogger } from "@/contexts/shared/infrastructure/logger/singleton.logger";
+import { UserRepository } from "@users/domain/user.repository";
+import { UserNotFoundException } from "@users/domain/exceptions/user-not-found.exception";
+import { JwtTokenService } from "@users/infrastructure/jwt-token/jwt-token.service";
+import { UserEntity } from "@users/domain/user.entity";
+import { getLogger } from "@shared/infrastructure/logger/singleton.logger";
 import { isNumberObject } from "util/types";
 
 export class ItemUpdateUseCase implements BaseUseCase {

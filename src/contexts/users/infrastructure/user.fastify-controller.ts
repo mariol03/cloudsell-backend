@@ -1,17 +1,16 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { UserRegisterUseCase } from "../application/use-cases/register/user-register.use-case";
-import { UserLoginUseCase } from "../application/use-cases/login/user-login.use-case";
 import { userRepositorySingleton } from "@shared/infrastructure/in-memory-singletons";
-import { InvalidUserDataException } from "../domain/exceptions/invalid-user-data.exception";
-import { EmailAlreadyRegisteredException } from "../domain/exceptions/email-already-registered.exception";
-import { InvalidCredentialsException } from "../domain/exceptions/invalid-credentials.exception";
-import { UserGetMeUseCase } from "../application/use-cases/get-me/user-get-me.use-case";
-import { UserResponseDto } from "../domain/user.response";
-import { AuthGetMeDto } from "../application/use-cases/get-me/dto/user-get-me.dto";
-import { UserRegisterDto } from "../application/use-cases/register/dto/user-register.dto";
-import { UserLoginDto } from "../application/use-cases/login/dto/user-login.dto";
-import { UserUpdateDto } from "../application/use-cases/update/dto/user-update.dto";
-import { UserUpdateUseCase } from "../application/use-cases/update/user-update.use-case";
+import { UserRegisterUseCase } from "@users/application/use-cases/register/user-register.use-case";
+import { UserLoginUseCase } from "@users/application/use-cases/login/user-login.use-case";
+import { InvalidUserDataException } from "@users/domain/exceptions/invalid-user-data.exception";
+import { EmailAlreadyRegisteredException } from "@users/domain/exceptions/email-already-registered.exception";
+import { InvalidCredentialsException } from "@users/domain/exceptions/invalid-credentials.exception";
+import { UserGetMeUseCase } from "@users/application/use-cases/get-me/user-get-me.use-case";
+import { UserRegisterDto } from "@users/application/use-cases/register/dto/user-register.dto";
+import { UserLoginDto } from "@users/application/use-cases/login/dto/user-login.dto";
+import { UserUpdateDto } from "@users/application/use-cases/update/dto/user-update.dto";
+import { UserUpdateUseCase } from "@users/application/use-cases/update/user-update.use-case";
+import { UserResponseDto } from "@users/domain/user.response";
 
 const userRepository = userRepositorySingleton;
 const userRegisterUseCase = new UserRegisterUseCase(userRepository);

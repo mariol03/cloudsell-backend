@@ -9,7 +9,7 @@ import { getMeSchema, loginSchema, registerSchema } from "./user.schemas";
 /**
  * Rutas públicas de autenticación (sin protección)
  */
-export const authRoutes = async (
+export const userRoutes = async (
     fastify: FastifyInstance,
     _options: FastifyPluginOptions,
 ) => {
