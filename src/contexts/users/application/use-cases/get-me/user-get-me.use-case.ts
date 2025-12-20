@@ -1,11 +1,10 @@
-import { BaseUseCase } from "@/contexts/shared/base.use-case";
-import { UserEntity } from "@/contexts/users/domain/user.entity";
-import { UserRepository } from "@/contexts/users/domain/user.repository";
-import { UserInMemoryRepository } from "@/contexts/users/infrastructure/user-inmemory.repository";
-import { UserGetByIdDto } from "../get-by-id/dto/user-get-by-id.dto";
-import { AuthGetMeDto } from "./dto/auth-get-me.dto";
-import { JwtTokenService } from "@/contexts/users/infrastructure/jwt-token.service";
-import { AuthResponseDto } from "@/contexts/users/domain/auth.entity";
+import { BaseUseCase } from "@shared/base.use-case";
+import { UserEntity } from "@users/domain/user.entity";
+import { UserRepository } from "@users/domain/user.repository";
+import { UserInMemoryRepository } from "@users/infrastructure/user-inmemory.repository";
+import { AuthGetMeDto } from "./dto/user-get-me.dto";
+import { JwtTokenService } from "@users/infrastructure/jwt-token/jwt-token.service";
+import { UserResponseDto } from "@users/domain/user.response";
 
 export class UserGetMeUseCase extends BaseUseCase {
     private readonly userRepository: UserRepository;
@@ -15,7 +14,7 @@ export class UserGetMeUseCase extends BaseUseCase {
         this.userRepository = userRepository || new UserInMemoryRepository();
     }
 
-    async execute(token: string): Promise<AuthResponseDto | null> {
+    async execute(token: string): Promise<UserResponseDto | null> {
         if (!token) throw new Error("Token is required");
         const valid = JwtTokenService.verifyToken(token);
         if (!valid) throw new Error("Invalid token");
