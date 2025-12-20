@@ -35,7 +35,6 @@ export class ItemUpdateUseCase implements BaseUseCase {
         if (
             !request?.name ||
             !request?.description ||
-            !request?.image ||
             isNumberObject(request?.price)
         ) {
             logger.error("Invalid item data");
@@ -74,6 +73,7 @@ export class ItemUpdateUseCase implements BaseUseCase {
         if (request.description) item.description = request.description;
         if (request.price !== undefined) item.price = request.price;
         if (request.stock !== undefined) item.stock = request.stock;
+        if (request.image !== undefined) item.image = request.image;
         await this.itemRepository.update(item);
         return item;
     }
