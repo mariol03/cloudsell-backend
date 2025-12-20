@@ -58,4 +58,12 @@ export class UserEntity extends BaseEntity {
     set role(value: UserRole) {
         this._role = value;
     }
+
+    get image(): string | null {
+        return this._image;
+    }
+
+    set image(value: string | null) {
+        this._image = value;
+    }
 }
