@@ -4,13 +4,9 @@ import type { UserRepository } from "@users/domain/user.repository";
 import { UserInMemoryRepository } from "@users/infrastructure/user-inmemory.repository";
 import { InvalidCredentialsException } from "@users/domain/exceptions/invalid-credentials.exception";
 import { PasswordHashService } from "@users/infrastructure/password-hash.service";
-import { JwtTokenService } from "@users/infrastructure/jwt-token.service";
-import { AuthResponseDto } from "@users/domain/auth.entity";
-
-export interface LoginDto {
-    email: string;
-    password: string;
-}
+import { JwtTokenService } from "@users/infrastructure/jwt-token/jwt-token.service";
+import { UserResponseDto } from "@users/domain/user.response";
+import { UserLoginDto } from "./dto/user-login.dto";
 
 /**
  * Use case para autenticar un usuario existente
@@ -22,7 +18,7 @@ export class UserLoginUseCase implements BaseUseCase {
         this.userRepository = userRepository || new UserInMemoryRepository();
     }
 
-    async execute(request: LoginDto): Promise<AuthResponseDto> {
+    async execute(request: UserLoginDto): Promise<UserResponseDto> {
         // Validación básica
         if (!request.email || !request.password) {
             throw new InvalidCredentialsException();

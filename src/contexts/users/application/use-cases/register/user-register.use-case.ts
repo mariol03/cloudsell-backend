@@ -5,15 +5,9 @@ import { UserInMemoryRepository } from "@users/infrastructure/user-inmemory.repo
 import { InvalidUserDataException } from "@users/domain/exceptions/invalid-user-data.exception";
 import { EmailAlreadyRegisteredException } from "@users/domain/exceptions/email-already-registered.exception";
 import { PasswordHashService } from "@users/infrastructure/password-hash.service";
-import { JwtTokenService } from "@users/infrastructure/jwt-token.service";
-import { AuthResponseDto } from "@users/domain/auth.entity";
-
-export interface RegisterDto {
-    name: string;
-    email: string;
-    password: string;
-    role?: UserRole;
-}
+import { JwtTokenService } from "@users/infrastructure/jwt-token/jwt-token.service";
+import { UserResponseDto } from "@users/domain/user.response";
+import { UserRegisterDto } from "@users/application/use-cases/register/dto/user-register.dto";
 
 /**
  * Use case para registrar un nuevo usuario
@@ -25,7 +19,7 @@ export class UserRegisterUseCase implements BaseUseCase {
         this.userRepository = userRepository || new UserInMemoryRepository();
     }
 
-    async execute(request: RegisterDto): Promise<AuthResponseDto> {
+    async execute(request: UserRegisterDto): Promise<UserResponseDto> {
         // Validación básica
         if (!request.name || !request.email || !request.password) {
             throw new InvalidUserDataException();

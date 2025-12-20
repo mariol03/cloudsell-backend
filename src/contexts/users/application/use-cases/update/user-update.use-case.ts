@@ -7,24 +7,25 @@ import { BaseUseCase } from "@shared/base.use-case";
 import { UserUpdateDto } from "./dto/user-update.dto";
 
 export class UserUpdateUseCase implements BaseUseCase {
-  private readonly userRepository: UserRepository;
+    private readonly userRepository: UserRepository;
 
-  constructor(userRepository?: UserRepository) {
-    this.userRepository = userRepository || new UserInMemoryRepository();
-  }
+    constructor(userRepository?: UserRepository) {
+        this.userRepository = userRepository || new UserInMemoryRepository();
+    }
 
-  async execute(request: UserUpdateDto): Promise<UserEntity> {
-    if (!request?.id) {
-      throw new InvalidUserDataException();
+    async execute(request: UserUpdateDto): Promise<UserEntity> {
+        if (!request?.id) {
+            throw new InvalidUserDataException();
+        }
+        const user = await this.userRepository.findById(request.id);
+        if (!user) {
+            throw new UserNotFoundException("Id", request.id);
+        }
+        if (request.name) user.name = request.name;
+        if (request.email) user.email = request.email;
+        if (request.password) user.password = request.password;
+        if (request.role) user.role = request.role;
+        await this.userRepository.save(user);
+        return user;
     }
-    const user = await this.userRepository.findById(request.id);
-    if (!user) {
-      throw new UserNotFoundException("Id", request.id);
-    }
-    if (request.name) user.name = request.name;
-    if (request.email) user.email = request.email;
-    if (request.password) user.password = request.password;
-    await this.userRepository.save(user);
-    return user;
-  }
 }
