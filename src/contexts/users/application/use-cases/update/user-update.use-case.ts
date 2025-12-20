@@ -25,6 +25,7 @@ export class UserUpdateUseCase implements BaseUseCase {
         if (request.email) user.email = request.email;
         if (request.password) user.password = request.password;
         if (request.role) user.role = request.role;
+        if (request.image) user.image = request.image;
         await this.userRepository.save(user);
         return user;
     }

@@ -21,7 +21,12 @@ export class UserRegisterUseCase implements BaseUseCase {
 
     async execute(request: UserRegisterDto): Promise<UserResponseDto> {
         // Validación básica
-        if (!request.name || !request.email || !request.password) {
+        if (
+            !request.name ||
+            !request.email ||
+            !request.password ||
+            !request.image
+        ) {
             throw new InvalidUserDataException();
         }
 
@@ -50,6 +55,7 @@ export class UserRegisterUseCase implements BaseUseCase {
             request.email,
             hashedPassword,
             request.role || UserRole.BUYER,
+            request.image,
         );
 
         // Guardar usuario
