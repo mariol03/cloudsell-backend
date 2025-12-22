@@ -1,5 +1,6 @@
 import { BaseUseCase } from "@shared/base.use-case";
 import { UserEntity, UserRole } from "@users/domain/user.entity";
+import { SellerStats } from "@users/domain/seller.stats";
 import type { UserRepository } from "@users/domain/user.repository";
 import { UserInMemoryRepository } from "@users/infrastructure/user-inmemory.repository";
 import { InvalidUserDataException } from "@users/domain/exceptions/invalid-user-data.exception";
@@ -58,6 +59,18 @@ export class UserRegisterUseCase implements BaseUseCase {
             request.image,
         );
 
+        if (user.role === UserRole.SELLER) {
+            user.sellerStats = new SellerStats(
+                user.id,
+                0,
+                new Date().toISOString(),
+                request.sellerResponseTime || "N/A", // Default response time
+                0,
+                request.sellerLocation || "",
+                request.sellerDescription || ""
+            );
+        }
+
         // Guardar usuario
         await this.userRepository.save(user);
 
@@ -71,6 +84,8 @@ export class UserRegisterUseCase implements BaseUseCase {
             role: user.role,
             image: user.image || "",
             token,
+            sellerStats: user.sellerStats || undefined,
+            buyerStats: user.buyerStats || undefined,
         };
     }
 

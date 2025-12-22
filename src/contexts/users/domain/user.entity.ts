@@ -1,4 +1,6 @@
 import { BaseEntity } from "@shared/base.entity";
+import { SellerStats } from "./seller.stats";
+import { BuyerStats } from "./buyer.stats";
 
 export enum UserRole {
     BUYER = "buyer",
@@ -11,6 +13,8 @@ export class UserEntity extends BaseEntity {
     private _password!: string; // Hash de la contraseña
     private _image!: string | null;
     private _role: UserRole = UserRole.BUYER;
+    private _sellerStats: SellerStats | null = null;
+    private _buyerStats: BuyerStats | null = null;
 
     constructor(
         name: string,
@@ -18,6 +22,8 @@ export class UserEntity extends BaseEntity {
         password: string,
         role: UserRole = UserRole.BUYER,
         image: string | null = null,
+        sellerStats: SellerStats | null = null,
+        buyerStats: BuyerStats | null = null,
     ) {
         super(); // Llama al constructor de la clase base
         this._name = name;
@@ -25,6 +31,8 @@ export class UserEntity extends BaseEntity {
         this._password = password;
         this._role = role;
         this._image = image;
+        this._sellerStats = sellerStats;
+        this._buyerStats = buyerStats;
     }
 
     get name(): string {
@@ -65,5 +73,21 @@ export class UserEntity extends BaseEntity {
 
     set image(value: string | null) {
         this._image = value;
+    }
+
+    get sellerStats(): SellerStats | null {
+        return this._sellerStats;
+    }
+
+    set sellerStats(value: SellerStats | null) {
+        this._sellerStats = value;
+    }
+
+    get buyerStats(): BuyerStats | null {
+        return this._buyerStats;
+    }
+
+    set buyerStats(value: BuyerStats | null) {
+        this._buyerStats = value;
     }
 }

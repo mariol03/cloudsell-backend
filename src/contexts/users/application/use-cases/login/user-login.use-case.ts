@@ -1,5 +1,5 @@
 import { BaseUseCase } from "@shared/base.use-case";
-import { UserEntity, UserRole } from "@users/domain/user.entity";
+// import { UserEntity, UserRole } from "@users/domain/user.entity";
 import type { UserRepository } from "@users/domain/user.repository";
 import { UserInMemoryRepository } from "@users/infrastructure/user-inmemory.repository";
 import { InvalidCredentialsException } from "@users/domain/exceptions/invalid-credentials.exception";
@@ -50,6 +50,8 @@ export class UserLoginUseCase implements BaseUseCase {
             role: user.role,
             image: user.image || "",
             token,
+            sellerStats: user.sellerStats || undefined,
+            buyerStats: user.buyerStats || undefined,
         };
     }
 }

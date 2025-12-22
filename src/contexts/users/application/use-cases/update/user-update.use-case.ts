@@ -1,6 +1,6 @@
 import { InvalidUserDataException } from "@users/domain/exceptions/invalid-user-data.exception";
 import { UserNotFoundException } from "@users/domain/exceptions/user-not-found.exception";
-import { UserEntity } from "@users/domain/user.entity";
+import { UserEntity, UserRole } from "@users/domain/user.entity";
 import type { UserRepository } from "@users/domain/user.repository";
 import { UserInMemoryRepository } from "@users/infrastructure/user-inmemory.repository";
 import { BaseUseCase } from "@shared/base.use-case";
@@ -25,7 +25,15 @@ export class UserUpdateUseCase implements BaseUseCase {
         if (request.email) user.email = request.email;
         if (request.password) user.password = request.password;
         if (request.role) user.role = request.role;
+        if (request.role) user.role = request.role;
         if (request.image) user.image = request.image;
+
+        if (user.role === UserRole.SELLER && user.sellerStats) {
+            if (request.sellerLocation) user.sellerStats.location = request.sellerLocation;
+            if (request.sellerDescription) user.sellerStats.description = request.sellerDescription;
+            if (request.sellerResponseTime) user.sellerStats.responseTime = request.sellerResponseTime;
+        }
+
         await this.userRepository.save(user);
         return user;
     }

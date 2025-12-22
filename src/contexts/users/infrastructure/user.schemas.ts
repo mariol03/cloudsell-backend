@@ -7,6 +7,28 @@ const UserResponseDto = {
     updatedAt: { type: "string", format: "date-time" },
     role: { type: "string", enum: ["buyer", "seller"] },
     token: { type: "string", format: "jwt" },
+    sellerStats: {
+        type: "object",
+        properties: {
+            id: { type: "string" },
+            rating: { type: "number" },
+            joinedDate: { type: "string" },
+            responseTime: { type: "string" },
+            salesCount: { type: "number" },
+            location: { type: "string" },
+            description: { type: "string" },
+        },
+        nullable: true,
+    },
+    buyerStats: {
+        type: "object",
+        properties: {
+            id: { type: "string" },
+            purchasesCount: { type: "number" },
+            totalSpent: { type: "number" },
+        },
+        nullable: true,
+    },
 };
 
 export const registerSchema = {
@@ -19,6 +41,9 @@ export const registerSchema = {
             password: { type: "string", minLength: 6 },
             image: { type: "string", format: "uri" },
             role: { type: "string", enum: ["buyer", "seller"] },
+            sellerLocation: { type: "string" },
+            sellerDescription: { type: "string" },
+            sellerResponseTime: { type: "string" },
         },
     },
     response: {
@@ -59,6 +84,9 @@ export const userUpdateSchema = {
             password: { type: "string", minLength: 6 },
             image: { type: "string", format: "uri" },
             role: { type: "string", enum: ["buyer", "seller"] },
+            sellerLocation: { type: "string" },
+            sellerDescription: { type: "string" },
+            sellerResponseTime: { type: "string" },
         },
         required: ["id"],
     },

@@ -7,4 +7,7 @@ export interface UserUpdateDto {
     password?: string;
     image?: string;
     role?: UserRole;
+    sellerLocation?: string;
+    sellerDescription?: string;
+    sellerResponseTime?: string;
 }

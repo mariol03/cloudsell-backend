@@ -1,4 +1,6 @@
 import { UserRole } from "./user.entity";
+import { SellerStats } from "./seller.stats";
+import { BuyerStats } from "./buyer.stats";
 
 export interface UserResponseDto {
     id: string;
@@ -7,4 +9,6 @@ export interface UserResponseDto {
     role: UserRole;
     image: string;
     token: string;
+    sellerStats?: SellerStats;
+    buyerStats?: BuyerStats;
 }
