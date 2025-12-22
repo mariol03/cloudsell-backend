@@ -3,8 +3,14 @@ import {
     registerController,
     loginController,
     getMeController,
+    updateUserController,
 } from "./user.fastify-controller";
-import { getMeSchema, loginSchema, registerSchema } from "./user.schemas";
+import {
+    getMeSchema,
+    loginSchema,
+    registerSchema,
+    userUpdateSchema,
+} from "./user.schemas";
 
 /**
  * Rutas públicas de autenticación (sin protección)
@@ -17,6 +23,12 @@ export const userRoutes = async (
     fastify.put("/register", {
         schema: registerSchema,
         handler: registerController,
+    });
+
+    // Actualización de perfil de usuario
+    fastify.put("/update", {
+        schema: userUpdateSchema,
+        handler: updateUserController,
     });
 
     // Login de usuario existente

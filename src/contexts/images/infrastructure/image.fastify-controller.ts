@@ -62,8 +62,6 @@ export const downloadImageController = async (
     reply: FastifyReply,
 ) => {
     try {
-        console.log(request.params);
-
         const image = await downloadImageUseCase.execute(request.params);
 
         if (!image) {

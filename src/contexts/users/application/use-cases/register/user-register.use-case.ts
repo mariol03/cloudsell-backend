@@ -69,6 +69,7 @@ export class UserRegisterUseCase implements BaseUseCase {
             name: user.name,
             email: user.email,
             role: user.role,
+            image: user.image || "",
             token,
         };
     }

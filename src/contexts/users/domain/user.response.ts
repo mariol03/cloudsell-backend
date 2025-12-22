@@ -5,5 +5,6 @@ export interface UserResponseDto {
     name: string;
     email: string;
     role: UserRole;
+    image: string;
     token: string;
 }

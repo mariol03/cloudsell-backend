@@ -48,6 +48,7 @@ export class UserLoginUseCase implements BaseUseCase {
             name: user.name,
             email: user.email,
             role: user.role,
+            image: user.image || "",
             token,
         };
     }
