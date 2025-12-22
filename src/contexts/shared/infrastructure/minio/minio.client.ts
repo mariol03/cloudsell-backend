@@ -74,7 +74,7 @@ export class MinioClient {
     getPublicUrl(bucketName: string, fileName: string): string {
         const protocol = "http"; // O https según tu config
         // Asegúrate de que MINIO_ENDPOINT no tenga 'http://' delante en tu config, solo la IP/Dominio
-        return `${protocol}://${MINIO_ENDPOINT}:${MINIO_PORT}/${bucketName}/${fileName}`;
+        return `${protocol}://${MINIO_ENDPOINT}:${MINIO_PORT}/${bucketName}/${encodeURIComponent(fileName)}`;
     }
 
     async uploadFile(
