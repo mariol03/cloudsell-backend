@@ -3,6 +3,7 @@ import { CartInMemoryRepository } from '@contexts/cart/infrastructure/cart-inmem
 import { OrderRepository } from '@contexts/cart/domain/order.repository';
 import { OrderInMemoryRepository } from '@contexts/cart/infrastructure/order-inmemory.repository';
 import { OrderEntity, OrderItem } from '@contexts/cart/domain/order.entity';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 export class CreateOrderFromCartUseCase {
   private readonly cartRepo: CartRepository;
@@ -13,12 +14,12 @@ export class CreateOrderFromCartUseCase {
     this.orderRepo = orderRepo || new OrderInMemoryRepository();
   }
 
-  async execute(ownerId: string) {
-    const cart = await this.cartRepo.findByOwnerId(ownerId);
+  async execute(body: CreateOrderDto) {
+    const cart = await this.cartRepo.findByOwnerId(body.ownerId);
     if (!cart || cart.items.length === 0) throw new Error('CartEmpty');
 
     const orderItems: OrderItem[] = cart.items.map(i => ({ item: i.item, quantity: i.quantity, price: i.item.price }));
-    const order = new OrderEntity(ownerId, orderItems);
+    const order = new OrderEntity(body.ownerId, orderItems);
     await this.orderRepo.save(order);
 
     // Clear cart after creating order

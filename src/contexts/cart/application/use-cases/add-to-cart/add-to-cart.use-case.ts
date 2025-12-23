@@ -4,6 +4,7 @@ import { ItemRepository } from '@items/domain/item.repository';
 import { ItemInMemoryRepository } from '@items/infrastructure/item-inmemory.repository';
 import { CartEntity } from '@contexts/cart/domain/cart.entity';
 import { ItemEntity } from '@items/domain/item.entity';
+import { AddToCartDto } from './dto/add-to-card.dto';
 
 export class AddToCartUseCase {
   private readonly repo: CartRepository;
@@ -14,14 +15,14 @@ export class AddToCartUseCase {
     this.itemRepo = itemRepo || new ItemInMemoryRepository();
   }
 
-  async execute(ownerId: string, itemId: string, quantity = 1): Promise<CartEntity> {
-    let cart = await this.repo.findByOwnerId(ownerId);
+  async execute(body: AddToCartDto): Promise<CartEntity> {
+    let cart = await this.repo.findByOwnerId(body.ownerId);
     if (!cart) {
-      cart = new CartEntity(ownerId);
+      cart = new CartEntity(body.ownerId);
     }
-    const item = await this.itemRepo.findById(itemId);
+    const item = await this.itemRepo.findById(body.itemId);
     if (!item) throw new Error('ItemNotFound');
-    cart.addItem(item as ItemEntity, quantity);
+    cart.addItem(item as ItemEntity, body.quantity);
     await this.repo.save(cart);
     return cart;
   }
