@@ -90,20 +90,30 @@ export class MinioClient {
             bucketName,
             fileName,
             file,
-            metadata as any,
+            file.length,
+            metadata,
         );
         const url = this.getPublicUrl(bucketName, fileName);
         return new UploadedFile(bucketName, fileName, url);
     }
 
-    async downloadFile(bucketName: string, fileName: string): Promise<Buffer> {
+    async downloadFile(
+        bucketName: string,
+        fileName: string,
+    ): Promise<{ buffer: Buffer; mimeType: string }> {
         try {
+            const stat = await this.client.statObject(bucketName, fileName);
+            const mimeType = stat.metaData["content-type"] || "application/octet-stream";
+            
             const data = await this.client.getObject(bucketName, fileName);
             const chunks: Buffer[] = [];
             for await (const chunk of data) {
                 chunks.push(chunk);
             }
-            return Buffer.concat(chunks);
+            return {
+                buffer: Buffer.concat(chunks),
+                mimeType,
+            };
         } catch (error) {
             if (error instanceof Error)
                 logger.error(`Error descargando archivo: ${error.message}`);
