@@ -9,6 +9,7 @@ import { itemRoutes } from "@/contexts/items/infrastructure/item.fastify-route";
 import { imageRoutes } from "@/contexts/images/infrastructure/image.fastify-route";
 import fastifyMultipart, { ajvFilePlugin } from "@fastify/multipart";
 import { cartRoutes } from "@/contexts/cart/infrastructure/cart.fastify-route";
+import { orderRoutes } from "@/contexts/orders/infrastructure/orders.fastify-route";
 
 // registrar plugins y rutas
 export const app = fastify({
@@ -79,6 +80,7 @@ app.register(userRoutes, { prefix: "/auth" });
 app.register(itemRoutes, { prefix: "/items" });
 app.register(imageRoutes, { prefix: "/images" });
 app.register(cartRoutes, { prefix: "/cart" });
+app.register(orderRoutes, { prefix: "/orders" });
 
 // Manejo de rutas no encontradas (404)
 app.setNotFoundHandler((request, reply) => {

@@ -8,6 +8,6 @@ export const userRepositorySingleton = new UserInMemoryRepository();
 
 // Cart and Order in-memory repositories
 import { CartInMemoryRepository } from "@contexts/cart/infrastructure/cart-inmemory.repository";
-import { OrderInMemoryRepository } from "@contexts/cart/infrastructure/order-inmemory.repository";
+import { OrderInMemoryRepository } from "@contexts/orders/infrastructure/order-inmemory.repository";
 export const cartRepositorySingleton = new CartInMemoryRepository();
 export const orderRepositorySingleton = new OrderInMemoryRepository();
