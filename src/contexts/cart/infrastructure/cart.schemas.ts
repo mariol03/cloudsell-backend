@@ -18,13 +18,6 @@ export const removeSchema = {
     },
 };
 
-export const checkoutSchema = {
-    body: {
-        type: "object",
-        required: ["ownerId"],
-        properties: { ownerId: { type: "string" } },
-    },
-};
 
 export const getSchema = {
     params: {
