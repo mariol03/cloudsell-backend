@@ -1,14 +1,13 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { UploadImageUseCase } from "@images/application/use-cases/upload/upload.image.use-case";
 import { ImageRepository } from "../domain/image.repository";
-import { ImageInMemoryRepository } from "./image-inmemory.repository";
 import { UploadImageDTO } from "@images/application/use-cases/upload/dto/upload.image.dto";
 import { MultipartBody } from "./image.fastify-schemas";
 import { DownloadImageDto } from "@images/application/use-cases/download/dto/download-image.dto";
 import { DownloadImageUseCase } from "@images/application/use-cases/download/download-image.use-case";
 import { MinIOImageRepository } from "./image-minio.repository";
 
-// const imageRepository: ImageRepository = new ImageInMemoryRepository();
+// TODO IMPLEMENT SINGLETON
 const imageRepository: ImageRepository = new MinIOImageRepository();
 const uploadImageUseCase = new UploadImageUseCase(imageRepository);
 const downloadImageUseCase = new DownloadImageUseCase(imageRepository);

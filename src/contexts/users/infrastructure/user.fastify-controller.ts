@@ -18,9 +18,6 @@ const userLoginUseCase = new UserLoginUseCase(userRepository);
 const userGetMeUseCase = new UserGetMeUseCase(userRepository);
 const userUpdateUseCase = new UserUpdateUseCase(userRepository);
 
-/**
- * Controlador para registrar un nuevo usuario
- */
 export const registerController = async (
     request: FastifyRequest<{ Body: UserRegisterDto }>,
     reply: FastifyReply,
@@ -50,9 +47,6 @@ export const registerController = async (
     }
 };
 
-/**
- * Controlador para autenticar un usuario
- */
 export const loginController = async (
     request: FastifyRequest<{ Body: UserLoginDto }>,
     reply: FastifyReply,
@@ -76,9 +70,6 @@ export const loginController = async (
     }
 };
 
-/**
- * Controlador para obtener información del usuario actual
- */
 export const getMeController = async (
     request: FastifyRequest,
     reply: FastifyReply,
@@ -106,7 +97,7 @@ export const getMeController = async (
             message: "Unauthorized",
             code: "UNAUTHORIZED",
         });
-    } catch (error: unknown) {
+    } catch {
         return reply.status(500).send({
             message: "Internal server error",
             code: "INTERNAL_ERROR",
@@ -141,7 +132,7 @@ export const updateUserController = async (
             message: "Unauthorized",
             code: "UNAUTHORIZED",
         });
-    } catch (error: unknown) {
+    } catch {
         return reply.status(500).send({
             message: "Internal server error",
             code: "INTERNAL_ERROR",

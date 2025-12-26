@@ -27,5 +27,4 @@ export class UserInMemoryRepository implements UserRepository {
     async findAll(): Promise<Array<UserEntity>> {
         return this.users; // Return the in-memory user list
     }
-  // Otros métodos según sea necesario
 }

@@ -1,5 +1,4 @@
 import { BaseUseCase } from "@shared/base.use-case";
-// import { UserEntity, UserRole } from "@users/domain/user.entity";
 import type { UserRepository } from "@users/domain/user.repository";
 import { UserInMemoryRepository } from "@users/infrastructure/user-inmemory.repository";
 import { InvalidCredentialsException } from "@users/domain/exceptions/invalid-credentials.exception";
@@ -8,9 +7,6 @@ import { JwtTokenService } from "@users/infrastructure/jwt-token/jwt-token.servi
 import { UserResponseDto } from "@users/domain/user.response";
 import { UserLoginDto } from "./dto/user-login.dto";
 
-/**
- * Use case para autenticar un usuario existente
- */
 export class UserLoginUseCase implements BaseUseCase {
     private readonly userRepository: UserRepository;
 

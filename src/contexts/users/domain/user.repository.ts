@@ -6,5 +6,4 @@ export interface UserRepository {
     findById(id: string): Promise<UserEntity | undefined>;
     deleteById(id: string): Promise<void>;
     findAll(): Promise<Array<UserEntity>>;
-  // Otros métodos según sea necesario
 }

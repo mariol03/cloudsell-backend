@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyPluginOptions } from "fastify";
+import { FastifyInstance } from "fastify";
 import {
     registerController,
     loginController,
@@ -17,7 +17,6 @@ import {
  */
 export const userRoutes = async (
     fastify: FastifyInstance,
-    _options: FastifyPluginOptions,
 ) => {
     // Registro de nuevo usuario
     fastify.put("/register", {

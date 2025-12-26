@@ -1,6 +1,6 @@
-import { FastifyInstance, FastifyPluginOptions } from "fastify";
+import { FastifyInstance } from "fastify";
 
-export const healthRoutes = async (fastify: FastifyInstance, _options: FastifyPluginOptions) => {
+export const healthRoutes = async (fastify: FastifyInstance) => {
   fastify.get('/', {
     schema: {
       response: {

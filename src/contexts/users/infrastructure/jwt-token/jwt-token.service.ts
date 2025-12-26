@@ -1,4 +1,4 @@
-import { sign, verify, JwtPayload, SignOptions } from "jsonwebtoken";
+import { sign, verify, JwtPayload } from "jsonwebtoken";
 import { UserEntity, UserRole } from "../../domain/user.entity";
 
 const JWT_SECRET =
