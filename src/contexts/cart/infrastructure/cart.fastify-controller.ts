@@ -15,8 +15,8 @@ export const addToCartController = async (request: FastifyRequest<{ Body: AddToC
   try {
     const cart = await addUseCase.execute(request.body);
     return reply.status(200).send(cart);
-  } catch (error: any) {
-    if (error.message === 'ItemNotFound') return reply.status(404).send({ message: 'Item not found' });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'ItemNotFound') return reply.status(404).send({ message: 'Item not found' });
     return reply.status(500).send({ message: 'Internal server error' });
   }
 }
@@ -25,8 +25,8 @@ export const removeFromCartController = async (request: FastifyRequest<{ Body: R
   try {
     const cart = await removeUseCase.execute(request.body);
     return reply.status(200).send(cart);
-  } catch (error: any) {
-    if (error.message === 'CartNotFound') return reply.status(404).send({ message: 'Cart not found' });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'CartNotFound') return reply.status(404).send({ message: 'Cart not found' });
     return reply.status(500).send({ message: 'Internal server error' });
   }
 }
@@ -36,7 +36,7 @@ export const getCartController = async (request: FastifyRequest<{ Params: ListCa
   try {
     const cart = await listCartUseCase.execute(request.params);
     return reply.status(200).send(cart);
-  } catch (error) {
+  } catch {
     return reply.status(500).send({ message: 'Internal server error' });
   }
 }
