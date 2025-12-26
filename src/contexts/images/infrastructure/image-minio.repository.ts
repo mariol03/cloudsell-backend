@@ -28,16 +28,16 @@ export class MinIOImageRepository implements ImageRepository {
 
     async findByUrl(url: string): Promise<ImageEntity | null> {
         // const [bucketName, fileName] = url.split("/");
-        const file = await this.client.downloadFile("images", url);
-        if (!file) return null;
-        const image = new ImageEntity(url, "", file);
+        const { buffer, mimeType } = await this.client.downloadFile("images", url);
+        if (!buffer) return null;
+        const image = new ImageEntity(url, "", buffer, mimeType);
         return image;
     }
 
     async findByName(name: string): Promise<ImageEntity | null> {
-        const file = await this.client.downloadFile("images", name);
-        if (!file) return null;
-        const image = new ImageEntity(name, name, file);
+        const { buffer, mimeType } = await this.client.downloadFile("images", name);
+        if (!buffer) return null;
+        const image = new ImageEntity(name, name, buffer, mimeType);
         return image;
     }
 

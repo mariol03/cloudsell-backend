@@ -9,7 +9,7 @@ export class ImageInMemoryRepository implements ImageRepository {
         const hash = Crypto.createHash("sha256")
             .update(image.url)
             .digest("hex");
-        const newImage = new ImageEntity(hash, image.alt, image.data);
+        const newImage = new ImageEntity(hash, image.alt, image.data, image.mimeType);
         this.images.push(newImage);
         return newImage;
     }
