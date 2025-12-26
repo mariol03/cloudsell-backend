@@ -7,7 +7,8 @@ import { swaggerOptions } from "../openapi";
 import cors from "@fastify/cors";
 import { itemRoutes } from "@/contexts/items/infrastructure/item.fastify-route";
 import { imageRoutes } from "@/contexts/images/infrastructure/image.fastify-route";
-import { pinoLogger } from "@/contexts/shared/infrastructure/logger/singleton.logger";
+import fastifyMultipart, { ajvFilePlugin } from "@fastify/multipart";
+import { cartRoutes } from "@/contexts/cart/infrastructure/cart.fastify-route";
 
 // registrar plugins y rutas
 export const app = fastify({
@@ -23,11 +24,11 @@ export const app = fastify({
             },
         },
     },
-    ajv: { plugins: [require("@fastify/multipart").ajvFilePlugin] },
+    ajv: { plugins: [ajvFilePlugin] },
 });
 
 // Configurar multipart
-app.register(require("@fastify/multipart"), {
+app.register(fastifyMultipart, {
     attachFieldsToBody: true, // Importante para recibir el fichero en el body
     limits: {
         fileSize: 5 * 1024 * 1024, // 5MB
@@ -68,7 +69,7 @@ app.register(swaggerUi as any, {
 });
 
 // Exponer especificación OpenAPI en JSON
-app.get("/openapi.json", async (request, reply) => {
+app.get("/openapi.json", async (_request, _reply) => {
     // @ts-except-error
     return app.swagger();
 });
@@ -77,6 +78,7 @@ app.register(healthRoutes, { prefix: "/health" });
 app.register(userRoutes, { prefix: "/auth" });
 app.register(itemRoutes, { prefix: "/items" });
 app.register(imageRoutes, { prefix: "/images" });
+app.register(cartRoutes, { prefix: "/cart" });
 
 // Manejo de rutas no encontradas (404)
 app.setNotFoundHandler((request, reply) => {

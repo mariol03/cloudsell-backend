@@ -90,4 +90,18 @@ export class UserEntity extends BaseEntity {
     set buyerStats(value: BuyerStats | null) {
         this._buyerStats = value;
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            role: this.role,
+            image: this.image,
+            sellerStats: this.sellerStats,
+            buyerStats: this.buyerStats,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+        };
+    }
 }
