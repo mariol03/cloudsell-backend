@@ -15,6 +15,7 @@
             "@shared/*": ["contexts/shared/*"],
             "@users/*": ["contexts/users/*"],
             "@images/*": ["contexts/images/*"],
+            "@cart/*": ["contexts/cart/*"],
             "@orders/*": ["contexts/orders/*"]
         },
 

@@ -1,15 +1,15 @@
 import fastify from "fastify";
-import { healthRoutes } from "../contexts/shared/infrastructure/health.fastify-route";
-import { userRoutes } from "../contexts/users/infrastructure/user.fastify-route";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import { swaggerOptions } from "../openapi";
 import cors from "@fastify/cors";
-import { itemRoutes } from "@/contexts/items/infrastructure/item.fastify-route";
-import { imageRoutes } from "@/contexts/images/infrastructure/image.fastify-route";
 import fastifyMultipart, { ajvFilePlugin } from "@fastify/multipart";
-import { cartRoutes } from "@/contexts/cart/infrastructure/cart.fastify-route";
-import { orderRoutes } from "@/contexts/orders/infrastructure/orders.fastify-route";
+import { healthRoutes } from "@shared/infrastructure/health.fastify-route";
+import { userRoutes } from "@users/infrastructure/user.fastify-route";
+import { itemRoutes } from "@items/infrastructure/item.fastify-route";
+import { imageRoutes } from "@images/infrastructure/image.fastify-route";
+import { cartRoutes } from "@cart/infrastructure/cart.fastify-route";
+import { orderRoutes } from "@orders/infrastructure/orders.fastify-route";
 
 // registrar plugins y rutas
 export const app = fastify({

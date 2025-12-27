@@ -15,7 +15,7 @@ export const uploadImageController = async (
 ) => {
     try {
         // Obtener el fichero cargado en el request
-        const file = request.body as unknown as MultipartBody;
+        const file = request.body as MultipartBody;
 
         // Validar el tipo de archivo
         const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
