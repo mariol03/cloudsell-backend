@@ -35,9 +35,7 @@ export const removeFromCartController = async (request: FastifyRequest<{ Body: R
 
 export const getCartController = async (request: FastifyRequest<{ Params: ListCartDto }>, reply: FastifyReply) => {
   try {
-    getLogger().info(JSON.stringify(request.params));
     const cart = await listCartUseCase.execute(request.params);
-    getLogger().info(JSON.stringify(cart));
     return reply.status(200).send(cart);
   } catch {
     return reply.status(500).send({ message: 'Internal server error' });

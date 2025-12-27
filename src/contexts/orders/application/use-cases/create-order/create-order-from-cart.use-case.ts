@@ -22,29 +22,25 @@ export class CreateOrderFromCartUseCase {
   }
 
   async execute(body: CreateOrderDto) {
-    const cart = await this.cartRepo.findByOwnerId(body.ownerId);
+    const cart = await this.cartRepo.findByUserId(body.userId);
     if (!cart || cart.items.length === 0) throw new Error('CartEmpty');
 
     const orderItems: OrderItem[] = cart.items.map(i => ({ item: i.item, quantity: i.quantity, price: i.item.price }));
-    const order = new OrderEntity(body.ownerId, orderItems);
+    const order = new OrderEntity(body.userId, orderItems);
     await this.orderRepo.save(order);
 
-    this.logger.info(`Order created for user ${body.ownerId}`);
     // Update user stats
-    const user = await this.userRepo.findById(body.ownerId);
+    const user = await this.userRepo.findById(body.userId);
     if (user) {
         if (!user.buyerStats) {
             user.buyerStats = BuyerStats.createDefault(user.id);
         }
 
-        this.logger.info(`User old total spent: ${user.buyerStats.totalSpent}`);
         user.buyerStats.purchasesCount += 1;
         user.buyerStats.totalSpent += cart.items.reduce((acc, i) => acc + i.item.price * i.quantity, 0);
-        this.logger.info(`User new total spent: ${user.buyerStats.totalSpent}`);
         await this.userRepo.save(user);
     }
 
-    this.logger.info(`Cart cleared for user ${body.ownerId}`);
     // Clear cart after creating order
     cart.clear();
     await this.cartRepo.save(cart);

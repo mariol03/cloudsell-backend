@@ -1,3 +1,3 @@
 export interface CreateOrderDto {
-    ownerId: string;
+    userId: string;
 }
