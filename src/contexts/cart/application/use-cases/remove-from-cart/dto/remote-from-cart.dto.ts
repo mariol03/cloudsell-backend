@@ -1,4 +1,4 @@
 export interface RemoveFromCartDto {
-    ownerId: string;
+    userId: string;
     itemId: string;
 }

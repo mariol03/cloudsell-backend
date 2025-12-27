@@ -7,12 +7,12 @@ export type CartItem = {
 };
 
 export class CartEntity extends BaseEntity {
-  ownerId: string;
+  userId: string;
   items: CartItem[] = [];
 
-  constructor(ownerId: string) {
+  constructor(userId: string) {
     super();
-    this.ownerId = ownerId;
+    this.userId = userId;
   }
 
   addItem(item: ItemEntity, quantity = 1) {

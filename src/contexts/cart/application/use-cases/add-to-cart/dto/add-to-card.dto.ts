@@ -1,5 +1,5 @@
 export interface AddToCartDto {
-    ownerId: string;
+    userId: string;
     itemId: string;
     quantity?: number;
 }

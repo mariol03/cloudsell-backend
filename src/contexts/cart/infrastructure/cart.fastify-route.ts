@@ -16,5 +16,5 @@ export const cartRoutes = async (fastify: FastifyInstance) => {
     // Buyer-only endpoints
     fastify.post<AddToCartRouteInterface>('/add', { schema: addSchema, onRequest: [authenticateMiddleware, authorizeRole([UserRole.BUYER])] }, addToCartController);
     fastify.post<RemoveFromCartRouteInterface>('/remove', { schema: removeSchema, onRequest: [authenticateMiddleware, authorizeRole([UserRole.BUYER])] }, removeFromCartController);
-    fastify.get<GetCartRouteInterface>('/:ownerId', { schema: getSchema, onRequest: [authenticateMiddleware, authorizeRole([UserRole.BUYER])] }, getCartController);
+    fastify.get<GetCartRouteInterface>('/:userId', { schema: getSchema, onRequest: [authenticateMiddleware, authorizeRole([UserRole.BUYER])] }, getCartController);
 }

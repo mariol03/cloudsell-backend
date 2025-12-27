@@ -1,3 +1,3 @@
 export interface ListCartDto {
-    ownerId: string;
+    userId: string;
 }

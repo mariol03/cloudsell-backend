@@ -16,9 +16,9 @@ export class AddToCartUseCase {
   }
 
   async execute(body: AddToCartDto): Promise<CartEntity> {
-    let cart = await this.repo.findByOwnerId(body.ownerId);
+    let cart = await this.repo.findByOwnerId(body.userId);
     if (!cart) {
-      cart = new CartEntity(body.ownerId);
+      cart = new CartEntity(body.userId);
     }
     const item = await this.itemRepo.findById(body.itemId);
     if (!item) throw new Error('ItemNotFound');

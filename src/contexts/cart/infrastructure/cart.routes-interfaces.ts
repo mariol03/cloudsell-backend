@@ -23,12 +23,12 @@ export interface AddToCartRouteInterface extends RouteGenericInterface {
 }
 
 export interface RemoveFromCartRouteInterface extends RouteGenericInterface {
-    Body: { ownerId: string, itemId: string };
+    Body: { userId: string, itemId: string };
     Response: {
         type: "object";
         properties: {
             id: { type: "string" };
-            ownerId: { type: "string" };
+            userId: { type: "string" };
             items: {
                 type: "array";
                 items: {
@@ -44,12 +44,12 @@ export interface RemoveFromCartRouteInterface extends RouteGenericInterface {
 }
 
 export interface CheckoutRouteInterface extends RouteGenericInterface {
-    Body: { ownerId: string };
+    Body: { userId: string };
     Response: {
         type: "object";
         properties: {
             id: { type: "string" };
-            ownerId: { type: "string" };
+            userId: { type: "string" };
             items: {
                 type: "array";
                 items: {
@@ -65,12 +65,12 @@ export interface CheckoutRouteInterface extends RouteGenericInterface {
 }
 
 export interface GetCartRouteInterface extends RouteGenericInterface {
-    Params: { ownerId: string };
+    Params: { userId: string };
     Response: {
         type: "object";
         properties: {
             id: { type: "string" };
-            ownerId: { type: "string" };
+            userId: { type: "string" };
             items: {
                 type: "array";
                 items: {

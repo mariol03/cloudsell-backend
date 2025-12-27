@@ -11,8 +11,8 @@ export class CartInMemoryRepository implements CartRepository {
     return cart;
   }
 
-  async findByOwnerId(ownerId: string): Promise<CartEntity | undefined> {
-    return this.carts.find(c => c.ownerId === ownerId);
+  async findByUserId(userId: string): Promise<CartEntity | undefined> {
+    return this.carts.find(c => c.userId === userId);
   }
 
   async deleteById(id: string): Promise<void> {

@@ -1,9 +1,9 @@
 export const addSchema = {
     body: {
         type: "object",
-        required: ["ownerId", "itemId", "quantity"],
+        required: ["userId", "itemId", "quantity"],
         properties: {
-            ownerId: { type: "string" },
+            userId: { type: "string" },
             itemId: { type: "string" },
             quantity: { type: "number" },
         },
@@ -13,8 +13,8 @@ export const addSchema = {
 export const removeSchema = {
     body: {
         type: "object",
-        required: ["ownerId", "itemId"],
-        properties: { ownerId: { type: "string" }, itemId: { type: "string" } },
+        required: ["userId", "itemId"],
+        properties: { userId: { type: "string" }, itemId: { type: "string" } },
     },
 };
 
@@ -22,7 +22,7 @@ export const removeSchema = {
 export const getSchema = {
     params: {
         type: "object",
-        required: ["ownerId"],
-        properties: { ownerId: { type: "string" } },
+        required: ["userId"],
+        properties: { userId: { type: "string" } },
     },
 };
