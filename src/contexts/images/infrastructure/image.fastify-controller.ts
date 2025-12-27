@@ -1,16 +1,13 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { UploadImageUseCase } from "@images/application/use-cases/upload/upload.image.use-case";
-import { ImageRepository } from "../domain/image.repository";
 import { UploadImageDTO } from "@images/application/use-cases/upload/dto/upload.image.dto";
 import { MultipartBody } from "./image.fastify-schemas";
 import { DownloadImageDto } from "@images/application/use-cases/download/dto/download-image.dto";
 import { DownloadImageUseCase } from "@images/application/use-cases/download/download-image.use-case";
-import { MinIOImageRepository } from "./image-minio.repository";
+import { imageRepositorySingleton } from "./image-singletons";
 
-// TODO IMPLEMENT SINGLETON
-const imageRepository: ImageRepository = new MinIOImageRepository();
-const uploadImageUseCase = new UploadImageUseCase(imageRepository);
-const downloadImageUseCase = new DownloadImageUseCase(imageRepository);
+const uploadImageUseCase = new UploadImageUseCase(imageRepositorySingleton);
+const downloadImageUseCase = new DownloadImageUseCase(imageRepositorySingleton);
 
 export const uploadImageController = async (
     request: FastifyRequest,
