@@ -16,7 +16,7 @@ export class AddToCartUseCase {
   }
 
   async execute(body: AddToCartDto): Promise<CartEntity> {
-    let cart = await this.repo.findByOwnerId(body.userId);
+    let cart = await this.repo.findByUserId(body.userId);
     if (!cart) {
       cart = new CartEntity(body.userId);
     }

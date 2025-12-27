@@ -6,6 +6,7 @@ import { AddToCartDto } from '../application/use-cases/add-to-cart/dto/add-to-ca
 import { RemoveFromCartDto } from '../application/use-cases/remove-from-cart/dto/remote-from-cart.dto';
 import { ListCartDto } from '../application/use-cases/list-cart/dto/list-cart.dto';
 import { ListCartUseCase } from '../application/use-cases/list-cart/list-cart.use-case';
+import { getLogger } from '@/contexts/shared/infrastructure/logger/singleton.logger';
 
 const addUseCase = new AddToCartUseCase(cartRepositorySingleton, itemRepositorySingleton);
 const removeUseCase = new RemoveFromCartUseCase(cartRepositorySingleton);
@@ -34,7 +35,9 @@ export const removeFromCartController = async (request: FastifyRequest<{ Body: R
 
 export const getCartController = async (request: FastifyRequest<{ Params: ListCartDto }>, reply: FastifyReply) => {
   try {
+    getLogger().info(JSON.stringify(request.params));
     const cart = await listCartUseCase.execute(request.params);
+    getLogger().info(JSON.stringify(cart));
     return reply.status(200).send(cart);
   } catch {
     return reply.status(500).send({ message: 'Internal server error' });

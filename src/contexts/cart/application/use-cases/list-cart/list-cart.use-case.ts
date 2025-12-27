@@ -12,7 +12,7 @@ export class ListCartUseCase extends BaseUseCase {
     }
 
     async execute(body: ListCartDto) {
-        const cart = await this.cartRepository.findByOwnerId(body.userId);
+        const cart = await this.cartRepository.findByUserId(body.userId);
         return cart;
     }
 }
