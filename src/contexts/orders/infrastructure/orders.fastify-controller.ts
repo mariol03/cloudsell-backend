@@ -3,10 +3,15 @@ import { cartRepositorySingleton, orderRepositorySingleton, userRepositorySingle
 import { CreateOrderFromCartUseCase } from '@orders/application/use-cases/create-order/create-order-from-cart.use-case';
 import { CreateOrderDto } from '@orders/application/use-cases/create-order/dto/create-order.dto';
 import { ListOrdersUseCase } from '@orders/application/use-cases/list-orders/list-orders.use-case';
-import { ListOrdersDto } from '../application/use-cases/list-orders/dto/list-orders.dto';
+import { AuthenticatedRequest } from "@users/infrastructure/auth/auth.middleware";
 
-const createOrderUseCase = new CreateOrderFromCartUseCase(cartRepositorySingleton, orderRepositorySingleton, userRepositorySingleton);
-const listOrdersUseCase = new ListOrdersUseCase(orderRepositorySingleton);
+const orderRepository = orderRepositorySingleton;
+const cartRepository = cartRepositorySingleton;
+const userRepository = userRepositorySingleton;
+
+const createOrderUseCase = new CreateOrderFromCartUseCase(cartRepository, orderRepository, userRepository);
+const listOrdersUseCase = new ListOrdersUseCase(orderRepository);
+
 
 export const createOrderController = async (request: FastifyRequest<{ Body: CreateOrderDto }>, reply: FastifyReply) => {
   try {
@@ -18,9 +23,12 @@ export const createOrderController = async (request: FastifyRequest<{ Body: Crea
   }
 }
 
-export const listOrdersController = async (request: FastifyRequest<{ Params: ListOrdersDto }>, reply: FastifyReply) => {
-    try {
-        const orders = await listOrdersUseCase.execute(request.params);
+export const listOrdersController = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {        
+        const user = (request as AuthenticatedRequest).user;
+        if (!user) throw new Error("User not authenticated");
+
+        const orders = await listOrdersUseCase.execute(user.id);
         return reply.status(200).send(orders);
     } catch {
         return reply.status(500).send({ message: 'Internal server error' });
