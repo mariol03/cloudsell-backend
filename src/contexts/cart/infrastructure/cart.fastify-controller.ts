@@ -6,7 +6,6 @@ import { AddToCartDto } from '../application/use-cases/add-to-cart/dto/add-to-ca
 import { RemoveFromCartDto } from '../application/use-cases/remove-from-cart/dto/remote-from-cart.dto';
 import { ListCartDto } from '../application/use-cases/list-cart/dto/list-cart.dto';
 import { ListCartUseCase } from '../application/use-cases/list-cart/list-cart.use-case';
-import { getLogger } from '@/contexts/shared/infrastructure/logger/singleton.logger';
 import { UpdateCartDto } from '../application/use-cases/update-cart/dto/update-cart.dto';
 import { UpdateCartUseCase } from '../application/use-cases/update-cart/update-cart.use-case';
 
