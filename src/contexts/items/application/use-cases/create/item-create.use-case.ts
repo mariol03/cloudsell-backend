@@ -11,18 +11,23 @@ import { UserNotFoundException } from "@/contexts/users/domain/exceptions/user-n
 import { UserEntity } from "@/contexts/users/domain/user.entity";
 import { JwtTokenService } from "@users/infrastructure/jwt-token/jwt-token.service";
 import { isNumberObject } from "util/types";
+import { CategoryRepository } from "../../../category/domain/category.respository";
+import { CategoryInMemoryRepository } from "../../../category/infrastructure/category.in-memory-repository";
 
 export class ItemCreateUseCase extends BaseUseCase {
     private readonly itemRepository: ItemRepository;
     private readonly userRepository: UserRepository;
+    private readonly categoryRepository: CategoryRepository;
 
     constructor(
         itemRepository?: ItemRepository,
         userRepository?: UserRepository,
+        categoryRepository?: CategoryRepository,
     ) {
         super();
         this.itemRepository = itemRepository || new ItemInMemoryRepository();
         this.userRepository = userRepository || new UserInMemoryRepository();
+        this.categoryRepository = categoryRepository || new CategoryInMemoryRepository();
     }
 
     async execute(
@@ -67,6 +72,14 @@ export class ItemCreateUseCase extends BaseUseCase {
             request.stock,
             user,
         );
+        if (request.categories && request.categories.length > 0) {
+            for (const categoryId of request.categories) {
+                const category = await this.categoryRepository.findById(categoryId);
+                if (category) {
+                    newItem.addCategory(category);
+                }
+            }
+        }
         await this.itemRepository.create(newItem);
         return newItem;
     }

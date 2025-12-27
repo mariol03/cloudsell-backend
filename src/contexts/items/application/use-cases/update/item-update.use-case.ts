@@ -12,17 +12,22 @@ import { JwtTokenService } from "@users/infrastructure/jwt-token/jwt-token.servi
 import { UserEntity } from "@users/domain/user.entity";
 import { getLogger } from "@shared/infrastructure/logger/singleton.logger";
 import { isNumberObject } from "util/types";
+import { CategoryRepository } from "../../../category/domain/category.respository";
+import { CategoryInMemoryRepository } from "../../../category/infrastructure/category.in-memory-repository";
 
 export class ItemUpdateUseCase implements BaseUseCase {
     private readonly itemRepository: ItemRepository;
     private readonly userRepository: UserRepository;
+    private readonly categoryRepository: CategoryRepository;
 
     constructor(
         itemRepository?: ItemRepository,
         userRepository?: UserRepository,
+        categoryRepository?: CategoryRepository,
     ) {
         this.itemRepository = itemRepository || new ItemInMemoryRepository();
         this.userRepository = userRepository || new UserInMemoryRepository();
+        this.categoryRepository = categoryRepository || new CategoryInMemoryRepository();
     }
 
     async execute(
@@ -74,6 +79,15 @@ export class ItemUpdateUseCase implements BaseUseCase {
         if (request.price !== undefined) item.price = request.price;
         if (request.stock !== undefined) item.stock = request.stock;
         if (request.image !== undefined) item.image = request.image;
+        if (request.categories) {
+            item.category = [];
+            for (const categoryId of request.categories) {
+                const category = await this.categoryRepository.findById(categoryId);
+                if (category) {
+                    item.addCategory(category);
+                }
+            }
+        }
         await this.itemRepository.update(item);
         return item;
     }

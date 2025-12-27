@@ -5,4 +5,5 @@ export interface ItemCreateDto {
     image: string;
     stock: number;
     user: string;
+    categories?: string[];
 }

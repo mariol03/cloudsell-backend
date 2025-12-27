@@ -75,6 +75,10 @@ export const createItemSchema = {
             image: { type: "string" },
             stock: { type: "number" },
             userId: { type: "string" },
+            categories: {
+                type: "array",
+                items: { type: "string" },
+            },
             // Agrega aquí otras propiedades requeridas para crear un item
         },
         required: ["name", "description", "price", "image", "stock"],
@@ -99,6 +103,10 @@ export const updateItemSchema = {
             image: { type: "string" },
             stock: { type: "number" },
             user: { type: "string" },
+            categories: {
+                type: "array",
+                items: { type: "string" },
+            },
             // El campo 'id' es requerido, los demás son opcionales según el DTO
         },
         required: ["id"],

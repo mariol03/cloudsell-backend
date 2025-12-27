@@ -35,13 +35,21 @@ import { ItemGetByUserIdDto } from "../application/use-cases/get-by-userid/dto/i
 const itemRepository: ItemRepository = itemRepositorySingleton;
 const userRepository: UserRepository = userRepositorySingleton;
 const categoryRepository: CategoryRepository = categoryRepositorySingleton;
-const itemCreate = new ItemCreateUseCase(itemRepository, userRepository);
+const itemCreate = new ItemCreateUseCase(
+    itemRepository,
+    userRepository,
+    categoryRepository,
+);
 const itemDelete = new ItemDeleteUseCase(itemRepository, userRepository);
 const itemGetAll = new ItemGetAllCase(itemRepository);
 const itemGetById = new ItemGetByIdCase(itemRepository);
 const itemGetByUserId = new ItemGetByUserIdUseCase(itemRepository);
 const itemGetByName = new ItemGetByNameCase(itemRepository);
-const itemUpdate = new ItemUpdateUseCase(itemRepository, userRepository);
+const itemUpdate = new ItemUpdateUseCase(
+    itemRepository,
+    userRepository,
+    categoryRepository,
+);
 const itemAddCategory = new AddCategoryToItemUseCase(
     itemRepository,
     categoryRepository,

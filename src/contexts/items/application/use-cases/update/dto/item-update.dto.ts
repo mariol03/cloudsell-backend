@@ -6,4 +6,5 @@ export interface ItemUpdateDto {
     image?: string;
     stock?: number;
     user?: string;
+    categories?: string[];
 }

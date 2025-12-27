@@ -10,6 +10,7 @@ import { itemRoutes } from "@items/infrastructure/item.fastify-route";
 import { imageRoutes } from "@images/infrastructure/image.fastify-route";
 import { cartRoutes } from "@cart/infrastructure/cart.fastify-route";
 import { orderRoutes } from "@orders/infrastructure/orders.fastify-route";
+import { categoryRoutes } from "@/contexts/items/category/infrastructure/category.fastify-route";
 
 // registrar plugins y rutas
 export const app = fastify({
@@ -81,6 +82,7 @@ app.register(itemRoutes, { prefix: "/items" });
 app.register(imageRoutes, { prefix: "/images" });
 app.register(cartRoutes, { prefix: "/cart" });
 app.register(orderRoutes, { prefix: "/orders" });
+app.register(categoryRoutes, { prefix: "/categories" });
 
 // Manejo de rutas no encontradas (404)
 app.setNotFoundHandler((request, reply) => {
