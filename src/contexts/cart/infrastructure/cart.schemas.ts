@@ -26,3 +26,11 @@ export const getSchema = {
         properties: { userId: { type: "string" } },
     },
 };
+
+export const updateSchema = {
+    body: {
+        type: "object",
+        required: ["userId", "itemId", "quantity"],
+        properties: { userId: { type: "string" }, itemId: { type: "string" }, quantity: { type: "number" } },
+    },
+};

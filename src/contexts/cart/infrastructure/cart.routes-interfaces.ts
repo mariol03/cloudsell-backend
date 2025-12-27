@@ -84,3 +84,24 @@ export interface GetCartRouteInterface extends RouteGenericInterface {
         }
     };
 }
+
+export interface UpdateCartRouteInterface extends RouteGenericInterface {
+    Body: { userId: string, itemId: string, quantity: number };
+    Response: {
+        type: "object";
+        properties: {
+            id: { type: "string" };
+            userId: { type: "string" };
+            items: {
+                type: "array";
+                items: {
+                    type: "object";
+                    properties: {
+                        itemId: { type: "string" };
+                        quantity: { type: "number" };
+                    }
+                }
+            }
+        }
+    };
+}

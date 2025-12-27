@@ -7,10 +7,13 @@ import { RemoveFromCartDto } from '../application/use-cases/remove-from-cart/dto
 import { ListCartDto } from '../application/use-cases/list-cart/dto/list-cart.dto';
 import { ListCartUseCase } from '../application/use-cases/list-cart/list-cart.use-case';
 import { getLogger } from '@/contexts/shared/infrastructure/logger/singleton.logger';
+import { UpdateCartDto } from '../application/use-cases/update-cart/dto/update-cart.dto';
+import { UpdateCartUseCase } from '../application/use-cases/update-cart/update-cart.use-case';
 
 const addUseCase = new AddToCartUseCase(cartRepositorySingleton, itemRepositorySingleton);
 const removeUseCase = new RemoveFromCartUseCase(cartRepositorySingleton);
 const listCartUseCase = new ListCartUseCase(cartRepositorySingleton);
+const updateCartUseCase = new UpdateCartUseCase(cartRepositorySingleton);
 
 export const addToCartController = async (request: FastifyRequest<{ Body: AddToCartDto }>, reply: FastifyReply) => {
   try {
@@ -38,6 +41,16 @@ export const getCartController = async (request: FastifyRequest<{ Params: ListCa
     const cart = await listCartUseCase.execute(request.params);
     return reply.status(200).send(cart);
   } catch {
+    return reply.status(500).send({ message: 'Internal server error' });
+  }
+}
+
+export const updateCartController = async (request: FastifyRequest<{ Body: UpdateCartDto }>, reply: FastifyReply) => {
+  try {
+    const cart = await updateCartUseCase.execute(request.body);
+    return reply.status(200).send(cart);
+  } catch (error) {
+    if (error instanceof Error && error.message === 'CartNotFound') return reply.status(404).send({ message: 'Cart not found' });
     return reply.status(500).send({ message: 'Internal server error' });
   }
 }
