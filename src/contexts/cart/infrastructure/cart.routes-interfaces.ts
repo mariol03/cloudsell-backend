@@ -7,7 +7,7 @@ export interface AddToCartRouteInterface extends RouteGenericInterface {
         type: "object";
         properties: {
             id: { type: "string" };
-            ownerId: { type: "string" };
+            userId: { type: "string" };
             items: {
                 type: "array";
                 items: {

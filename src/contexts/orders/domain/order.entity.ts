@@ -14,14 +14,14 @@ export enum OrderStatus {
 }
 
 export class OrderEntity extends BaseEntity {
-  ownerId: string;
+  userId: string;
   items: OrderItem[] = [];
   total: number = 0;
   status: OrderStatus = OrderStatus.CREATED;
 
-  constructor(ownerId: string, items: OrderItem[] = []) {
+  constructor(userId: string, items: OrderItem[] = []) {
     super();
-    this.ownerId = ownerId;
+    this.userId = userId;
     this.items = items;
     this.total = this.calculateTotal();
   }

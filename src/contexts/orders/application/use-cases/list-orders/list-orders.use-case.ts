@@ -5,6 +5,6 @@ export class ListOrdersUseCase {
     constructor(private readonly orderRepository: OrderRepository) {}
 
     async execute(userId: string): Promise<OrderEntity[]> {
-        return this.orderRepository.findByOwnerId(userId);
+        return this.orderRepository.findByUserId(userId);
     }
 }

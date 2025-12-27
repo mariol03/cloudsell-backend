@@ -1,7 +1,7 @@
 export const checkoutSchema = {
     body: {
         type: "object",
-        required: ["ownerId"],
-        properties: { ownerId: { type: "string" } },
+        required: ["userId"],
+        properties: { userId: { type: "string" } },
     },
 };

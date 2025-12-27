@@ -1,11 +1,11 @@
 export interface CreateOrderRouteInterface {
     Body: {
-        ownerId: string;
+        userId: string;
     };
 }
 
 export interface ListOrdersRouteInterface {
     Params: {
-        ownerId: string;
+        userId: string;
     };
 }

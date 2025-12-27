@@ -15,7 +15,7 @@ export class OrderInMemoryRepository implements OrderRepository {
     return this.orders.find(o => o.id === id);
   }
 
-  async findByOwnerId(ownerId: string): Promise<OrderEntity[]> {
-    return this.orders.filter(o => o.ownerId === ownerId);
+  async findByUserId(userId: string): Promise<OrderEntity[]> {
+    return this.orders.filter(o => o.userId === userId);
   }
 }

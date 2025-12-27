@@ -11,7 +11,7 @@ export class RemoveFromCartUseCase {
   }
 
   async execute(body: RemoveFromCartDto): Promise<CartEntity> {
-    const cart = await this.repo.findByOwnerId(body.userId);
+    const cart = await this.repo.findByUserId(body.userId);
     if (!cart) throw new Error('CartNotFound');
     cart.removeItem(body.itemId);
     await this.repo.save(cart);
