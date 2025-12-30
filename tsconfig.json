@@ -1,40 +1,52 @@
 {
     "compilerOptions": {
         /* Language and Environment */
-        "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-
+        "target": "es2023" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
         /* Modules */
         "module": "commonjs" /* Specify what module code is generated. */,
         "rootDir": "./src" /* Specify the root folder within your source files. */,
         "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
         "baseUrl": "./src" /* Specify the base directory to resolve non-relative module names. */,
         "paths": {
-            "@/*": ["./*"],
-            "@contexts/*": ["contexts/*"],
-            "@items/*": ["contexts/items/*"],
-            "@shared/*": ["contexts/shared/*"],
-            "@users/*": ["contexts/users/*"],
-            "@images/*": ["contexts/images/*"],
-            "@cart/*": ["contexts/cart/*"],
-            "@orders/*": ["contexts/orders/*"]
+            "@/*": [
+                "./*"
+            ],
+            "@contexts/*": [
+                "contexts/*"
+            ],
+            "@items/*": [
+                "contexts/items/*"
+            ],
+            "@shared/*": [
+                "contexts/shared/*"
+            ],
+            "@users/*": [
+                "contexts/users/*"
+            ],
+            "@images/*": [
+                "contexts/images/*"
+            ],
+            "@cart/*": [
+                "contexts/cart/*"
+            ],
+            "@orders/*": [
+                "contexts/orders/*"
+            ]
         },
-
         /* Emit */
         "outDir": "./dist" /* Specify an output folder for all emitted files. */,
-
         /* Interop Constraints */
         "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
         "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-
         /* Type Checking */
         "strict": true /* Enable all strict type-checking options. */,
-
         /* Completeness */
-        "skipLibCheck": true /* Skip type checking all .d.ts files. */
+        "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     },
     // Additional configuration
     "exclude": [
         "node_modules",
+        "prisma.config.ts",
         "**/*.test.ts", // Excluye archivos .test.ts en cualquier carpeta
         "**/*.spec.ts", // Excluye archivos .spec.ts
         "src/tests/**/*" // Excluye archivos en la carpeta src/tests

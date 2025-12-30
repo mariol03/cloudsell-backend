@@ -1,5 +1,4 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { userRepositorySingleton } from "@shared/infrastructure/in-memory-singletons";
 import { UserRegisterUseCase } from "@users/application/use-cases/register/user-register.use-case";
 import { UserLoginUseCase } from "@users/application/use-cases/login/user-login.use-case";
 import { InvalidUserDataException } from "@users/domain/exceptions/invalid-user-data.exception";
@@ -11,8 +10,10 @@ import { UserLoginDto } from "@users/application/use-cases/login/dto/user-login.
 import { UserUpdateDto } from "@users/application/use-cases/update/dto/user-update.dto";
 import { UserUpdateUseCase } from "@users/application/use-cases/update/user-update.use-case";
 import { UserResponseDto } from "@users/domain/user.response";
+import { userRepositoryPrismaSingleton } from "@/contexts/shared/infrastructure/prisma-singletons";
+import { getLogger } from "@/contexts/shared/infrastructure/logger/singleton.logger";
 
-const userRepository = userRepositorySingleton;
+const userRepository = userRepositoryPrismaSingleton;
 const userRegisterUseCase = new UserRegisterUseCase(userRepository);
 const userLoginUseCase = new UserLoginUseCase(userRepository);
 const userGetMeUseCase = new UserGetMeUseCase(userRepository);
@@ -40,6 +41,7 @@ export const registerController = async (
                 code: "EMAIL_ALREADY_REGISTERED",
             });
         }
+        getLogger().error(JSON.stringify(error));
         return reply.status(500).send({
             message: "Internal server error",
             code: "INTERNAL_ERROR",

@@ -11,3 +11,4 @@ export const MINIO_PORT: number = parseInt(
     process.env.MINIO_PORT ?? "9000",
     10,
 );
+export const DATABASE_URL: string = process.env.DATABASE_URL ?? "";

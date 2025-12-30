@@ -1,8 +1,6 @@
 // import { ItemRepository } from "../domain/item.repository";
 import {
-    itemRepositorySingleton,
     categoryRepositorySingleton,
-    userRepositorySingleton,
 } from "@shared/infrastructure/in-memory-singletons";
 import { ItemCreateUseCase } from "../application/use-cases/create/item-create.use-case";
 import { ItemDeleteUseCase } from "../application/use-cases/delete/item-delete.use-case";
@@ -31,10 +29,13 @@ import { UserRepository } from "@/contexts/users/domain/user.repository";
 import { UserUnauthorizedException } from "@/contexts/users/domain/exceptions/user-unauthorized.exception";
 import { ItemGetByUserIdUseCase } from "../application/use-cases/get-by-userid/item-get-by-userid.use-case";
 import { ItemGetByUserIdDto } from "../application/use-cases/get-by-userid/dto/item-get-by-userid.dto";
+import { userRepositoryPrismaSingleton } from "@/contexts/shared/infrastructure/prisma-singletons";
+import { itemRepositoryPrismaSingleton } from "@/contexts/shared/infrastructure/prisma-singletons";
 
-const itemRepository: ItemRepository = itemRepositorySingleton;
-const userRepository: UserRepository = userRepositorySingleton;
+const itemRepository: ItemRepository = itemRepositoryPrismaSingleton;
+const userRepository: UserRepository = userRepositoryPrismaSingleton;
 const categoryRepository: CategoryRepository = categoryRepositorySingleton;
+
 const itemCreate = new ItemCreateUseCase(
     itemRepository,
     userRepository,

@@ -11,11 +11,11 @@ import { CategoryGetByNameDto } from "../application/use-cases/get-by-name/dto/c
 import { CategoryAlreadyFoundException } from "../domain/exceptions/category-already-found.exception";
 import { CategoryInvalidDataException } from "../domain/exceptions/category-invalid-data.exception";
 import { CategoryNotFoundException } from "../domain/exceptions/category-not-found.exception";
-import { categoryRepositorySingleton } from "@shared/infrastructure/in-memory-singletons";
 import { CategoryUpdateDto } from "../application/use-cases/update/dto/category-update.dto";
 import { CategoryUpdateUseCase } from "../application/use-cases/update/category-update.use-case";
+import { categoryRepositoryPrismaSingleton } from "@/contexts/shared/infrastructure/prisma-singletons";
 
-const categoryRepository = categoryRepositorySingleton;
+const categoryRepository = categoryRepositoryPrismaSingleton;
 const categoryCreator = new CategoryCreator(categoryRepository);
 const categoryGetById = new CategoryGetByIdUseCase(categoryRepository);
 const categoryGetByName = new CategoryGetByNameUseCase(categoryRepository);
@@ -24,7 +24,7 @@ const categoryDelete = new CategoryDeleteUseCase(categoryRepository);
 const categoryUpdate = new CategoryUpdateUseCase(categoryRepository);
 
 export const createCategoryController = async (
-    request:FastifyRequest<{Body: CategoryCreateDto}>, 
+    request: FastifyRequest<{ Body: CategoryCreateDto }>,
     reply: FastifyReply
 ) => {
     try {
@@ -46,7 +46,7 @@ export const createCategoryController = async (
 }
 
 export const retrieveCategoryByIdController = async (
-    request: FastifyRequest<{ Params: CategoryGetByIdDto }>, 
+    request: FastifyRequest<{ Params: CategoryGetByIdDto }>,
     reply: FastifyReply
 ) => {
     try {
@@ -72,7 +72,7 @@ export const retrieveCategoryByIdController = async (
 }
 
 export const retrieveCategoryByNameController = async (
-    request: FastifyRequest<{ Params: CategoryGetByNameDto }>, 
+    request: FastifyRequest<{ Params: CategoryGetByNameDto }>,
     reply: FastifyReply
 ) => {
     try {
@@ -97,7 +97,7 @@ export const retrieveCategoryByNameController = async (
 }
 
 export const retrieveAllCategoriesController = async (
-    request: FastifyRequest, 
+    request: FastifyRequest,
     reply: FastifyReply
 ) => {
     try {
@@ -114,7 +114,7 @@ export const retrieveAllCategoriesController = async (
 };
 
 export const deleteCategoryController = async (
-    request: FastifyRequest<{ Body: CategoryDeleteDto }>, 
+    request: FastifyRequest<{ Body: CategoryDeleteDto }>,
     reply: FastifyReply
 ) => {
     try {
@@ -132,7 +132,7 @@ export const deleteCategoryController = async (
 };
 
 export const updateCategoryController = async (
-    request: FastifyRequest<{ Body: CategoryUpdateDto }>, 
+    request: FastifyRequest<{ Body: CategoryUpdateDto }>,
     reply: FastifyReply
 ) => {
     try {
