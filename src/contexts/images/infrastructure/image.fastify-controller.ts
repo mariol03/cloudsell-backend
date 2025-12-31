@@ -18,7 +18,7 @@ export const uploadImageController = async (
         const file = request.body as MultipartBody;
 
         // Validar el tipo de archivo
-        const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
+        const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
         if (!allowedMimeTypes.includes(file.image.mimetype)) {
             return reply
                 .status(400)
