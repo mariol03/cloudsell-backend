@@ -4,3 +4,5 @@ dist
 package-lock.json
 .env
 IMAGES_ROADMAP.md
+
+/prisma/src/contexts/shared/infrastructure/prisma

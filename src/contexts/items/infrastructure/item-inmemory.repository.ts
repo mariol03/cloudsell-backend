@@ -33,11 +33,11 @@ export class ItemInMemoryRepository implements ItemRepository {
         return this.items.find((i) => i.id === id) || null;
     }
 
-    async findByUserId(userId: string): Promise<Array<ItemEntity>> {
+    async findByUserId(userId: string): Promise<Array<ItemEntity | null>> {
         return this.items.filter((i) => i.user.id === userId);
     }
 
-    async findAll(): Promise<ItemEntity[]> {
+    async findAll(): Promise<Array<ItemEntity | null>> {
         return this.items;
     }
 }

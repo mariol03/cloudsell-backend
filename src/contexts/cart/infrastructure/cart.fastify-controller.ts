@@ -1,5 +1,4 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { cartRepositorySingleton, itemRepositorySingleton } from '@shared/infrastructure/in-memory-singletons';
 import { AddToCartUseCase } from '@/contexts/cart/application/use-cases/add-to-cart/add-to-cart.use-case';
 import { RemoveFromCartUseCase } from '@/contexts/cart/application/use-cases/remove-from-cart/remove-from-cart.use-case';
 import { AddToCartDto } from '../application/use-cases/add-to-cart/dto/add-to-card.dto';
@@ -8,11 +7,15 @@ import { ListCartDto } from '../application/use-cases/list-cart/dto/list-cart.dt
 import { ListCartUseCase } from '../application/use-cases/list-cart/list-cart.use-case';
 import { UpdateCartDto } from '../application/use-cases/update-cart/dto/update-cart.dto';
 import { UpdateCartUseCase } from '../application/use-cases/update-cart/update-cart.use-case';
+import { itemRepositoryPrismaSingleton, cartRepositoryPrismaSingleton } from '@shared/infrastructure/prisma-singletons';
 
-const addUseCase = new AddToCartUseCase(cartRepositorySingleton, itemRepositorySingleton);
-const removeUseCase = new RemoveFromCartUseCase(cartRepositorySingleton);
-const listCartUseCase = new ListCartUseCase(cartRepositorySingleton);
-const updateCartUseCase = new UpdateCartUseCase(cartRepositorySingleton);
+
+const cartRepository = cartRepositoryPrismaSingleton;
+const itemRepository = itemRepositoryPrismaSingleton;
+const addUseCase = new AddToCartUseCase(cartRepository, itemRepository);
+const removeUseCase = new RemoveFromCartUseCase(cartRepository);
+const listCartUseCase = new ListCartUseCase(cartRepository);
+const updateCartUseCase = new UpdateCartUseCase(cartRepository);
 
 export const addToCartController = async (request: FastifyRequest<{ Body: AddToCartDto }>, reply: FastifyReply) => {
   try {

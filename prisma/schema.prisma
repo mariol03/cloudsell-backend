@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/contexts/shared/infrastructure/prisma/"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id          String       @id @default(cuid())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  createdBy   String
+  updatedBy   String
+  email       String       @unique
+  password    String
+  name        String
+  role        String       @default("USER")
+  image       String?
+  sellerStats SellerStats?
+  buyerStats  BuyerStats?
+  items       Item[]
+  carts       Cart[]
+  orders      Order[]
+}
+
+model SellerStats {
+  id           String  @id @default(cuid())
+  user         User    @relation(fields: [userId], references: [id])
+  userId       String  @unique
+  rating       Float   @default(0)
+  totalSales   Int     @default(0)
+  responseTime Float   @default(0)
+  location     String?
+  description  String?
+}
+
+model BuyerStats {
+  id         String @id @default(cuid())
+  user       User   @relation(fields: [userId], references: [id])
+  userId     String @unique
+  purchases  Int    @default(0)
+  totalSpent Float  @default(0)
+}
+
+model Item {
+  id          String      @id @default(cuid())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  createdBy   String
+  updatedBy   String
+  name        String
+  description String?
+  image       String?
+  price       Float
+  stock       Int
+  seller      User        @relation(fields: [sellerId], references: [id])
+  sellerId    String
+  categories  Category[]
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String
+  updatedBy   String
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  items       Item[]
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  createdBy String
+  updatedBy String
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String
+  items     CartItem[]
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  cartId    String
+  item      Item     @relation(fields: [itemId], references: [id])
+  itemId    String
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  createdBy String
+  updatedBy String
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
+  items     OrderItem[]
+  total     Float
+  status    String
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String
+  item      Item     @relation(fields: [itemId], references: [id])
+  itemId    String
+  quantity  Int
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
