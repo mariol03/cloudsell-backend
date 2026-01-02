@@ -12,46 +12,35 @@ export interface ItemGetAllDto {
 }
 
 export class ItemGetAllCase extends BaseUseCase {
-    private readonly itemRepository: ItemRepository;
-
-    constructor(itemRepository?: ItemRepository) {
+    constructor(
+        private readonly itemRepository: ItemRepository = new ItemInMemoryRepository(),
+    ) {
         super();
-        this.itemRepository = itemRepository || new ItemInMemoryRepository();
     }
 
-    async execute(filters?: ItemGetAllDto): Promise<Array<ItemEntity>> {
-        const all = await this.itemRepository.findAll();
+    async execute(filters: ItemGetAllDto = {}): Promise<ItemEntity[]> {
+        const items = await this.itemRepository.findAll();
+        const nonNullableItems = items.filter((item): item is ItemEntity => !!item);
 
-        let result = all;
+        const filtered = this.applyFilters(nonNullableItems, filters);
+        return this.paginate(filtered, filters.page, filters.pageSize);
+    }
 
-        if (filters) {
-            if (filters.categoryId) {
-                result = result.filter((i) =>
-                    (i.category || []).some(
-                        (c) => c.id === filters!.categoryId,
-                    ),
-                );
-            }
-            if (filters.minPrice !== undefined) {
-                result = result.filter(
-                    (i) => (i.price ?? 0) >= filters!.minPrice!,
-                );
-            }
-            if (filters.maxPrice !== undefined) {
-                result = result.filter(
-                    (i) => (i.price ?? 0) <= filters!.maxPrice!,
-                );
-            }
-            // pagination
-            const page = filters.page && filters.page > 0 ? filters.page : 1;
-            const pageSize =
-                filters.pageSize && filters.pageSize > 0
-                    ? filters.pageSize
-                    : result.length;
-            const start = (page - 1) * pageSize;
-            result = result.slice(start, start + pageSize);
-        }
+    private applyFilters(items: ItemEntity[], filters: ItemGetAllDto): ItemEntity[] {
+        const { categoryId, minPrice, maxPrice } = filters;
 
-        return result;
+        return items.filter((item) => {
+            const matchesCategory = !categoryId || item.category?.some((c) => c.id === categoryId);
+            const matchesMinPrice = minPrice === undefined || (item.price ?? 0) >= minPrice;
+            const matchesMaxPrice = maxPrice === undefined || (item.price ?? 0) <= maxPrice;
+
+            return matchesCategory && matchesMinPrice && matchesMaxPrice;
+        });
+    }
+
+    private paginate(items: ItemEntity[], page: number = 1, pageSize?: number): ItemEntity[] {
+        const size = pageSize && pageSize > 0 ? pageSize : items.length;
+        const start = (Math.max(1, page) - 1) * size;
+        return items.slice(start, start + size);
     }
 }
