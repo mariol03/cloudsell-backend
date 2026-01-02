@@ -1,8 +1,5 @@
 import { ItemRepository } from "../domain/item.repository";
 import { ItemEntity } from "../domain/item.entity";
-import { getLogger } from "@shared/infrastructure/logger/singleton.logger";
-
-const logger = getLogger();
 
 export class ItemInMemoryRepository implements ItemRepository {
     private readonly items: ItemEntity[] = [];
