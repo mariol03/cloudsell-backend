@@ -14,12 +14,12 @@ export class ItemGetByUserIdUseCase extends BaseUseCase {
     }
 
     async execute(params: ItemGetByUserIdDto): Promise<Array<ItemEntity>> {
-        // Comprobar que se ha introducido algo en la solicitud
         if (!params?.userId) {
             throw new InvalidItemDataException();
         }
 
         const items = await this.itemRepository.findByUserId(params.userId);
-        return items;
+        const nonNullableItems = items.filter((item): item is ItemEntity => item !== null);
+        return nonNullableItems;
     }
 }
