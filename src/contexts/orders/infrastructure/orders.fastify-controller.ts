@@ -1,13 +1,12 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { cartRepositorySingleton, orderRepositorySingleton } from '@shared/infrastructure/in-memory-singletons';
 import { CreateOrderFromCartUseCase } from '@orders/application/use-cases/create-order/create-order-from-cart.use-case';
 import { CreateOrderDto } from '@orders/application/use-cases/create-order/dto/create-order.dto';
 import { ListOrdersUseCase } from '@orders/application/use-cases/list-orders/list-orders.use-case';
 import { AuthenticatedRequest } from "@users/infrastructure/auth/auth.middleware";
-import { userRepositoryPrismaSingleton, orderRepositoryPrismaSingleton } from '@/contexts/shared/infrastructure/prisma-singletons';
+import { userRepositoryPrismaSingleton, orderRepositoryPrismaSingleton, cartRepositoryPrismaSingleton } from '@/contexts/shared/infrastructure/prisma-singletons';
 
 const orderRepository = orderRepositoryPrismaSingleton;
-const cartRepository = cartRepositorySingleton;
+const cartRepository = cartRepositoryPrismaSingleton;
 const userRepository = userRepositoryPrismaSingleton;
 
 const createOrderUseCase = new CreateOrderFromCartUseCase(cartRepository, orderRepository, userRepository);
