@@ -3,6 +3,7 @@ import { ItemEntity } from "../domain/item.entity";
 import { ItemRepository } from "../domain/item.repository";
 import { Item, User } from "@/contexts/shared/infrastructure/prisma/client";
 import { UserEntity, UserRole } from "@/contexts/users/domain/user.entity";
+import { InvalidItemDataException } from "../domain/exceptions/invalid-item-data.exception";
 
 type ItemWithSeller = Item & { seller: User };
 
@@ -29,7 +30,11 @@ export class ItemPrismaRepository implements ItemRepository {
                 seller: true
             }
         });
-        return this.toEntity(newItem);
+        const itemEntity = this.toEntity(newItem);
+        if (!itemEntity) {
+            throw new InvalidItemDataException();
+        }
+        return itemEntity;
     }
     async update(item: ItemEntity): Promise<ItemEntity> {
         const updatedItem = await prisma.item.update({
@@ -48,7 +53,11 @@ export class ItemPrismaRepository implements ItemRepository {
                 seller: true
             }
         });
-        return this.toEntity(updatedItem);
+        const itemEntity = this.toEntity(updatedItem);
+        if (!itemEntity) {
+            throw new InvalidItemDataException();
+        }
+        return itemEntity;
     }
     async delete(item: ItemEntity): Promise<void> {
         await prisma.item.delete({
@@ -73,7 +82,7 @@ export class ItemPrismaRepository implements ItemRepository {
                 id: id
             }, include: {
                 seller: true
-            }
+            },
         });
         return this.toEntity(item);
     }
