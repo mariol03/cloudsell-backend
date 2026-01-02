@@ -37,11 +37,7 @@ export class ItemUpdateUseCase implements BaseUseCase {
         const logger = getLogger();
         let user: UserEntity | undefined;
 
-        if (
-            !request?.name ||
-            !request?.description ||
-            isNumberObject(request?.price)
-        ) {
+        if (isNumberObject(request?.price)) {
             logger.error("Invalid item data");
             throw new InvalidItemDataException();
         }
