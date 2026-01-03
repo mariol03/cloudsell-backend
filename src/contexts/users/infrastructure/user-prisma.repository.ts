@@ -1,9 +1,14 @@
 import { prisma } from "@shared/infrastructure/prisma-singletons";
 import { UserEntity, UserRole } from "../domain/user.entity";
 import { UserRepository } from "../domain/user.repository";
-import { User } from "../../shared/infrastructure/prisma/client";
-import { SellerStats } from "../domain/seller.stats";
+import { User, SellerStats as PrismaSellerStats , BuyerStats as PrismaBuyerStats } from "../../shared/infrastructure/prisma/client";
+import { SellerStats} from "../domain/seller.stats";
 import { BuyerStats } from "../domain/buyer.stats";
+
+type UserWithStats = User & {
+    sellerStats?: PrismaSellerStats | null;
+    buyerStats?: PrismaBuyerStats | null;
+};
 
 export class UserPrismaRepository implements UserRepository {
     async save(user: UserEntity): Promise<UserEntity> {
@@ -84,6 +89,10 @@ export class UserPrismaRepository implements UserRepository {
         const user = await prisma.user.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                sellerStats: true,
+                buyerStats: true
             }
         });
         if (!user) {
@@ -128,7 +137,7 @@ export class UserPrismaRepository implements UserRepository {
         });
     }
 
-    private toEntity(prismaUser: User): UserEntity {
+    private toEntity(prismaUser: UserWithStats): UserEntity {
         const user = new UserEntity(
             prismaUser.name,
             prismaUser.email,
@@ -141,6 +150,26 @@ export class UserPrismaRepository implements UserRepository {
         user.updatedAt = prismaUser.updatedAt;
         user.createdBy = prismaUser.createdBy;
         user.updatedBy = prismaUser.updatedBy;
+
+        if (prismaUser.role === UserRole.SELLER && prismaUser.sellerStats) {
+            user.sellerStats = new SellerStats(
+                prismaUser.sellerStats.id,
+                prismaUser.sellerStats.rating,
+                '',
+                prismaUser.sellerStats.responseTime ?? '',
+                prismaUser.sellerStats.totalSales,
+                prismaUser.sellerStats.location ?? '',
+                prismaUser.sellerStats.description ?? ''
+            );
+        }
+
+        if (prismaUser.role === UserRole.BUYER && prismaUser.buyerStats) {
+            user.buyerStats = new BuyerStats(
+                prismaUser.buyerStats.id,
+                prismaUser.buyerStats.purchases,
+                prismaUser.buyerStats.totalSpent
+            );
+        }
         return user;
     }
 
