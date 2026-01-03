@@ -1,7 +1,4 @@
 // import { ItemRepository } from "../domain/item.repository";
-import {
-    categoryRepositorySingleton,
-} from "@shared/infrastructure/in-memory-singletons";
 import { ItemCreateUseCase } from "../application/use-cases/create/item-create.use-case";
 import { ItemDeleteUseCase } from "../application/use-cases/delete/item-delete.use-case";
 import { ItemGetAllCase } from "../application/use-cases/get-all/item-get-all.use-case";
@@ -17,11 +14,6 @@ import { ItemNotFoundException } from "../domain/exceptions/item-not-found.excep
 import { ItemGetByNameDto } from "../application/use-cases/get-by-name/dto/item-get-by-name.dto";
 import { ItemGetByIdDto } from "../application/use-cases/get-by-id/dto/item-get-by-id.dto";
 import { ItemUpdateDto } from "../application/use-cases/update/dto/item-update.dto";
-import { CategoryNotFoundException } from "@items/category/domain/exceptions/category-not-found.exception";
-import { AddCategoryDto } from "../application/use-cases/add-category/dto/add-category.dto";
-import { DeleteCategoryDto } from "../application/use-cases/delete-category/dto/delete-category.dto";
-import { DeleteCategoryUseCase } from "../application/use-cases/delete-category/delete-category.use-case";
-import { AddCategoryToItemUseCase } from "../application/use-cases/add-category/add-category.use-case";
 import { CategoryRepository } from "@items/category/domain/category.respository";
 import { ItemRepository } from "@items/domain/item.repository";
 import { UserNotFoundException } from "@/contexts/users/domain/exceptions/user-not-found.exception";
@@ -29,12 +21,12 @@ import { UserRepository } from "@/contexts/users/domain/user.repository";
 import { UserUnauthorizedException } from "@/contexts/users/domain/exceptions/user-unauthorized.exception";
 import { ItemGetByUserIdUseCase } from "../application/use-cases/get-by-userid/item-get-by-userid.use-case";
 import { ItemGetByUserIdDto } from "../application/use-cases/get-by-userid/dto/item-get-by-userid.dto";
-import { userRepositoryPrismaSingleton } from "@/contexts/shared/infrastructure/prisma-singletons";
-import { itemRepositoryPrismaSingleton } from "@/contexts/shared/infrastructure/prisma-singletons";
+import { categoryRepositoryPrismaSingleton, userRepositoryPrismaSingleton, itemRepositoryPrismaSingleton } from "@shared/infrastructure/prisma-singletons";
+import { getLogger } from "@/contexts/shared/infrastructure/logger/singleton.logger";
 
 const itemRepository: ItemRepository = itemRepositoryPrismaSingleton;
 const userRepository: UserRepository = userRepositoryPrismaSingleton;
-const categoryRepository: CategoryRepository = categoryRepositorySingleton;
+const categoryRepository: CategoryRepository = categoryRepositoryPrismaSingleton;
 
 const itemCreate = new ItemCreateUseCase(
     itemRepository,
@@ -51,14 +43,8 @@ const itemUpdate = new ItemUpdateUseCase(
     userRepository,
     categoryRepository,
 );
-const itemAddCategory = new AddCategoryToItemUseCase(
-    itemRepository,
-    categoryRepository,
-);
-const itemDeleteCategory = new DeleteCategoryUseCase(
-    itemRepository,
-    categoryRepository,
-);
+
+const logger = getLogger();
 
 export const createItemController = async (
     request: FastifyRequest<{ Body: ItemCreateDto }>,
@@ -75,6 +61,7 @@ export const createItemController = async (
             description: item.description,
         });
     } catch (error: unknown) {
+        logger.error(`Error in createItemController: ${error}`);
         if (error instanceof ItemAlreadyExistsException) {
             return reply.status(422).send({ message: error.message });
         }
@@ -102,6 +89,7 @@ export const deleteItemController = async (
         );
         return reply.status(200).send(item);
     } catch (error) {
+        logger.error(`Error in deleteItemController: ${error}`);
         if (error instanceof InvalidItemDataException) {
             return reply.status(422).send(error.message);
         }
@@ -126,6 +114,7 @@ export const getItemByIdController = async (
         const item = await itemGetById.execute(request.params);
         return item;
     } catch (error) {
+        logger.error(`Error in getItemByIdController: ${error}`);
         if (error instanceof ItemNotFoundException) {
             return reply.status(404).send(error.message);
         }
@@ -144,6 +133,7 @@ export const getItemByNameController = async (
         const item = await itemGetByName.execute(request.params);
         return item;
     } catch (error) {
+        logger.error(`Error in getItemByNameController: ${error}`);
         if (error instanceof InvalidItemDataException) {
             return reply.status(422).send(error.message);
         }
@@ -162,6 +152,7 @@ export const getItemsByUserIdController = async (
         const item = await itemGetByUserId.execute(request.params);
         return item;
     } catch (error) {
+        logger.error(`Error in getItemByNameController: ${error}`);
         if (error instanceof InvalidItemDataException) {
             return reply.status(422).send(error.message);
         }
@@ -185,7 +176,7 @@ export const getItemsController = async (
         const items = await itemGetAll.execute(filters);
         return reply.status(200).send(items);
     } catch (error: unknown) {
-        console.error("Error retrieving items:", error);
+        logger.error(`Error in getItemsController: ${error}`);
         return reply.status(500).send({ message: "Internal server error" });
     }
 };
@@ -201,52 +192,11 @@ export const updateItemController = async (
         );
         return reply.status(200).send(item);
     } catch (error) {
+        logger.error(`Error in updateItemController: ${error}`);
         if (error instanceof InvalidItemDataException) {
             return reply.status(422).send({ message: error.message });
         }
         if (error instanceof ItemNotFoundException) {
-            return reply.status(422).send({ message: error.message });
-        }
-        return reply.status(500).send({ message: "Internal server error" });
-    }
-};
-
-export const addCategoryToItemController = async (
-    request: FastifyRequest<{ Body: AddCategoryDto }>,
-    reply: FastifyReply,
-) => {
-    try {
-        const updatedItem = await itemAddCategory.execute(request.body);
-        return reply.status(200).send(updatedItem);
-    } catch (error: unknown) {
-        if (error instanceof ItemNotFoundException) {
-            return reply.status(404).send({ message: error.message });
-        }
-        if (error instanceof CategoryNotFoundException) {
-            return reply.status(404).send({ message: error.message });
-        }
-        if (error instanceof InvalidItemDataException) {
-            return reply.status(422).send({ message: error.message });
-        }
-        return reply.status(500).send({ message: "Internal server error" });
-    }
-};
-
-export const deleteCategoryFromItemController = async (
-    request: FastifyRequest<{ Body: DeleteCategoryDto }>,
-    reply: FastifyReply,
-) => {
-    try {
-        const updatedItem = await itemDeleteCategory.execute(request.body);
-        return reply.status(200).send(updatedItem);
-    } catch (error: unknown) {
-        if (error instanceof ItemNotFoundException) {
-            return reply.status(404).send({ message: error.message });
-        }
-        if (error instanceof CategoryNotFoundException) {
-            return reply.status(404).send({ message: error.message });
-        }
-        if (error instanceof InvalidItemDataException) {
             return reply.status(422).send({ message: error.message });
         }
         return reply.status(500).send({ message: "Internal server error" });
