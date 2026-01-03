@@ -11,6 +11,17 @@ type ItemWithSeller = Item & { seller: User } & { categories?: Array<Category> }
 
 export class ItemPrismaRepository implements ItemRepository {
     async create(item: ItemEntity): Promise<ItemEntity> {
+        let categories:CategoryEntity[] = [];
+        if (item.category && item.category.length > 0) {
+            categories = item.category.map((cat) => (
+                (() => {
+                    const categoryEntity = new CategoryEntity(cat.name, cat.description);
+                    categoryEntity.id = cat.id;
+                    return categoryEntity;
+                })()
+            ));
+        }
+
         const newItem = await prisma.item.create({
             data: {
                 id: item.id,
@@ -27,7 +38,10 @@ export class ItemPrismaRepository implements ItemRepository {
                 createdAt: item.createdAt,
                 updatedAt: item.updatedAt,
                 createdBy: item.createdBy,
-                updatedBy: item.updatedBy
+                updatedBy: item.updatedBy,
+                categories: {
+                    connect: categories.map((cat) => ({ id: cat.id }))
+                }
             }, include: {
                 seller: true
             }
