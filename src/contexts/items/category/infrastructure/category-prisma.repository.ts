@@ -59,9 +59,12 @@ export class CategoryPrismaRepository implements CategoryRepository {
 
     private toCategoryEntity(category: Category): CategoryEntity {
         const newCategory = new CategoryEntity(
-            category.id,
             category.name,
+            category.description || '',
         );
+        newCategory.id = category.id;
+        newCategory.createdAt = category.createdAt;
+        newCategory.updatedAt = category.updatedAt;
         newCategory.createdBy = category.createdBy;
         newCategory.updatedBy = category.updatedBy;
 
