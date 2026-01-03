@@ -41,7 +41,6 @@ export const registerController = async (
                 code: "EMAIL_ALREADY_REGISTERED",
             });
         }
-        getLogger().error(JSON.stringify(error));
         return reply.status(500).send({
             message: "Internal server error",
             code: "INTERNAL_ERROR",
@@ -134,7 +133,7 @@ export const updateUserController = async (
             message: "Unauthorized",
             code: "UNAUTHORIZED",
         });
-    } catch {
+    } catch  {
         return reply.status(500).send({
             message: "Internal server error",
             code: "INTERNAL_ERROR",
