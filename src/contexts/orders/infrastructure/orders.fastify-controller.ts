@@ -3,13 +3,15 @@ import { CreateOrderFromCartUseCase } from '@orders/application/use-cases/create
 import { CreateOrderDto } from '@orders/application/use-cases/create-order/dto/create-order.dto';
 import { ListOrdersUseCase } from '@orders/application/use-cases/list-orders/list-orders.use-case';
 import { AuthenticatedRequest } from "@users/infrastructure/auth/auth.middleware";
-import { userRepositoryPrismaSingleton, orderRepositoryPrismaSingleton, cartRepositoryPrismaSingleton } from '@/contexts/shared/infrastructure/prisma-singletons';
+import { userRepositoryPrismaSingleton, orderRepositoryPrismaSingleton, cartRepositoryPrismaSingleton, itemRepositoryPrismaSingleton } from '@/contexts/shared/infrastructure/prisma-singletons';
+import { InsufficientStockException } from '../domain/exceptions/insufficient-stock.exception';
 
 const orderRepository = orderRepositoryPrismaSingleton;
 const cartRepository = cartRepositoryPrismaSingleton;
 const userRepository = userRepositoryPrismaSingleton;
+const itemRepository = itemRepositoryPrismaSingleton;
 
-const createOrderUseCase = new CreateOrderFromCartUseCase(cartRepository, orderRepository, userRepository);
+const createOrderUseCase = new CreateOrderFromCartUseCase(cartRepository, orderRepository, userRepository, itemRepository);
 const listOrdersUseCase = new ListOrdersUseCase(orderRepository);
 
 
@@ -19,6 +21,7 @@ export const createOrderController = async (request: FastifyRequest<{ Body: Crea
     return reply.status(201).send(order);
   } catch (error) {
     if (error instanceof Error && error.message === 'CartEmpty') return reply.status(400).send({ message: 'Cart is empty' });
+    if (error instanceof InsufficientStockException) return reply.status(400).send({ message: error.message });
     return reply.status(500).send({ message: 'Internal server error' });
   }
 }
