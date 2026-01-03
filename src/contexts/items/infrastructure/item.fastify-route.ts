@@ -6,8 +6,6 @@ import {
     getItemByNameController,
     getItemsController,
     updateItemController,
-    addCategoryToItemController,
-    deleteCategoryFromItemController,
     getItemsByUserIdController,
 } from "./item.fastify-controller";
 import {
@@ -80,26 +78,4 @@ export const itemRoutes = async (fastify: FastifyInstance) => {
         },
         deleteItemController,
     );
-    // fastify.post(
-    //     "/add-category",
-    //     {
-    //         schema: addCategorySchema,
-    //         onRequest: [
-    //             authenticateMiddleware,
-    //             authorizeRole([UserRole.SELLER]),
-    //         ],
-    //     },
-    //     addCategoryToItemController,
-    // );
-    // fastify.post(
-    //     "/delete-category",
-    //     {
-    //         schema: deleteCategorySchema,
-    //         onRequest: [
-    //             authenticateMiddleware,
-    //             authorizeRole([UserRole.SELLER]),
-    //         ],
-    //     },
-    //     deleteCategoryFromItemController,
-    // );
 };

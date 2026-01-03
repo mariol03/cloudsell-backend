@@ -2,6 +2,8 @@ import { RouteGenericInterface } from "fastify";
 import { ItemCreateDto } from "../application/use-cases/create/dto/item-create.dto";
 import { ItemUpdateDto } from "../application/use-cases/update/dto/item-update.dto";
 import { ItemDeleteDto } from "../application/use-cases/delete/dto/item-delete.dto";
+import { AddCategoryDto } from "../application/use-cases/add-category/dto/add-category.dto";
+import { DeleteCategoryDto } from "../application/use-cases/delete-category/dto/delete-category.dto";
 
 export interface CreateItemRoute extends RouteGenericInterface {
     Body: ItemCreateDto;

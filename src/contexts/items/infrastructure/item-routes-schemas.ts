@@ -178,35 +178,3 @@ export const getItemByUserIdSchema = {
         },
     },
 };
-
-// Esquema para eliminar una categoría de un item
-export const deleteCategorySchema = {
-    body: {
-        type: "object",
-        properties: {
-            item: {
-                type: "object",
-                properties: {
-                    id: { type: "string" },
-                },
-                required: ["id"],
-            },
-            category: {
-                type: "object",
-                properties: {
-                    id: { type: "string" },
-                },
-                required: ["id"],
-            },
-        },
-        required: ["item", "category"],
-    },
-    response: {
-        200: {
-            type: "object",
-            properties: {
-                message: { type: "string" },
-            },
-        },
-    },
-};
