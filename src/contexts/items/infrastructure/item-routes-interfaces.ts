@@ -12,7 +12,6 @@ export interface CreateItemRoute extends RouteGenericInterface {
         price: { type: "number" };
         createdAt: { type: "string"; format: "date-time" };
         updatedAt: { type: "string"; format: "date-time" };
-        // Agrega aquí otras propiedades relevantes del ItemEntity si existen
     };
 }
 
@@ -27,7 +26,6 @@ export interface UpdateItemRoute extends RouteGenericInterface {
             price: { type: "number" };
             createdAt: { type: "string"; format: "date-time" };
             updatedAt: { type: "string"; format: "date-time" };
-            // Propiedades reflejando el modelo de ItemEntity
         };
     };
 }
@@ -39,7 +37,6 @@ export interface DeleteItemRoute extends RouteGenericInterface {
         properties: {
             success: { type: "boolean" };
             message: { type: "string" };
-            // Puedes agregar más información si lo consideras necesario
         };
     };
 }
