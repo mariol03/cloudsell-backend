@@ -6,3 +6,5 @@ package-lock.json
 IMAGES_ROADMAP.md
 scripts/*.txt
 /prisma/src/contexts/shared/infrastructure/prisma
+/prisma/migrations
+/src/contexts/shared/infrastructure/prisma

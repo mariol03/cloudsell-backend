@@ -31,7 +31,7 @@ model SellerStats {
   userId       String  @unique
   rating       Float   @default(0)
   totalSales   Int     @default(0)
-  responseTime Float   @default(0)
+  responseTime String?   
   location     String?
   description  String?
 }

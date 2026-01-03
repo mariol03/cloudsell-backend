@@ -29,13 +29,11 @@ export type AggregateSellerStats = {
 export type SellerStatsAvgAggregateOutputType = {
   rating: number | null
   totalSales: number | null
-  responseTime: number | null
 }
 
 export type SellerStatsSumAggregateOutputType = {
   rating: number | null
   totalSales: number | null
-  responseTime: number | null
 }
 
 export type SellerStatsMinAggregateOutputType = {
@@ -43,7 +41,7 @@ export type SellerStatsMinAggregateOutputType = {
   userId: string | null
   rating: number | null
   totalSales: number | null
-  responseTime: number | null
+  responseTime: string | null
   location: string | null
   description: string | null
 }
@@ -53,7 +51,7 @@ export type SellerStatsMaxAggregateOutputType = {
   userId: string | null
   rating: number | null
   totalSales: number | null
-  responseTime: number | null
+  responseTime: string | null
   location: string | null
   description: string | null
 }
@@ -73,13 +71,11 @@ export type SellerStatsCountAggregateOutputType = {
 export type SellerStatsAvgAggregateInputType = {
   rating?: true
   totalSales?: true
-  responseTime?: true
 }
 
 export type SellerStatsSumAggregateInputType = {
   rating?: true
   totalSales?: true
-  responseTime?: true
 }
 
 export type SellerStatsMinAggregateInputType = {
@@ -204,7 +200,7 @@ export type SellerStatsGroupByOutputType = {
   userId: string
   rating: number
   totalSales: number
-  responseTime: number
+  responseTime: string | null
   location: string | null
   description: string | null
   _count: SellerStatsCountAggregateOutputType | null
@@ -237,7 +233,7 @@ export type SellerStatsWhereInput = {
   userId?: Prisma.StringFilter<"SellerStats"> | string
   rating?: Prisma.FloatFilter<"SellerStats"> | number
   totalSales?: Prisma.IntFilter<"SellerStats"> | number
-  responseTime?: Prisma.FloatFilter<"SellerStats"> | number
+  responseTime?: Prisma.StringNullableFilter<"SellerStats"> | string | null
   location?: Prisma.StringNullableFilter<"SellerStats"> | string | null
   description?: Prisma.StringNullableFilter<"SellerStats"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -248,7 +244,7 @@ export type SellerStatsOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   totalSales?: Prisma.SortOrder
-  responseTime?: Prisma.SortOrder
+  responseTime?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -262,7 +258,7 @@ export type SellerStatsWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.SellerStatsWhereInput | Prisma.SellerStatsWhereInput[]
   rating?: Prisma.FloatFilter<"SellerStats"> | number
   totalSales?: Prisma.IntFilter<"SellerStats"> | number
-  responseTime?: Prisma.FloatFilter<"SellerStats"> | number
+  responseTime?: Prisma.StringNullableFilter<"SellerStats"> | string | null
   location?: Prisma.StringNullableFilter<"SellerStats"> | string | null
   description?: Prisma.StringNullableFilter<"SellerStats"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -273,7 +269,7 @@ export type SellerStatsOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   totalSales?: Prisma.SortOrder
-  responseTime?: Prisma.SortOrder
+  responseTime?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SellerStatsCountOrderByAggregateInput
@@ -291,7 +287,7 @@ export type SellerStatsScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"SellerStats"> | string
   rating?: Prisma.FloatWithAggregatesFilter<"SellerStats"> | number
   totalSales?: Prisma.IntWithAggregatesFilter<"SellerStats"> | number
-  responseTime?: Prisma.FloatWithAggregatesFilter<"SellerStats"> | number
+  responseTime?: Prisma.StringNullableWithAggregatesFilter<"SellerStats"> | string | null
   location?: Prisma.StringNullableWithAggregatesFilter<"SellerStats"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"SellerStats"> | string | null
 }
@@ -300,7 +296,7 @@ export type SellerStatsCreateInput = {
   id?: string
   rating?: number
   totalSales?: number
-  responseTime?: number
+  responseTime?: string | null
   location?: string | null
   description?: string | null
   user: Prisma.UserCreateNestedOneWithoutSellerStatsInput
@@ -311,7 +307,7 @@ export type SellerStatsUncheckedCreateInput = {
   userId: string
   rating?: number
   totalSales?: number
-  responseTime?: number
+  responseTime?: string | null
   location?: string | null
   description?: string | null
 }
@@ -320,7 +316,7 @@ export type SellerStatsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalSales?: Prisma.IntFieldUpdateOperationsInput | number
-  responseTime?: Prisma.FloatFieldUpdateOperationsInput | number
+  responseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutSellerStatsNestedInput
@@ -331,7 +327,7 @@ export type SellerStatsUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalSales?: Prisma.IntFieldUpdateOperationsInput | number
-  responseTime?: Prisma.FloatFieldUpdateOperationsInput | number
+  responseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -341,7 +337,7 @@ export type SellerStatsCreateManyInput = {
   userId: string
   rating?: number
   totalSales?: number
-  responseTime?: number
+  responseTime?: string | null
   location?: string | null
   description?: string | null
 }
@@ -350,7 +346,7 @@ export type SellerStatsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalSales?: Prisma.IntFieldUpdateOperationsInput | number
-  responseTime?: Prisma.FloatFieldUpdateOperationsInput | number
+  responseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -360,7 +356,7 @@ export type SellerStatsUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalSales?: Prisma.IntFieldUpdateOperationsInput | number
-  responseTime?: Prisma.FloatFieldUpdateOperationsInput | number
+  responseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -383,7 +379,6 @@ export type SellerStatsCountOrderByAggregateInput = {
 export type SellerStatsAvgOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   totalSales?: Prisma.SortOrder
-  responseTime?: Prisma.SortOrder
 }
 
 export type SellerStatsMaxOrderByAggregateInput = {
@@ -409,7 +404,6 @@ export type SellerStatsMinOrderByAggregateInput = {
 export type SellerStatsSumOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   totalSales?: Prisma.SortOrder
-  responseTime?: Prisma.SortOrder
 }
 
 export type SellerStatsCreateNestedOneWithoutUserInput = {
@@ -464,7 +458,7 @@ export type SellerStatsCreateWithoutUserInput = {
   id?: string
   rating?: number
   totalSales?: number
-  responseTime?: number
+  responseTime?: string | null
   location?: string | null
   description?: string | null
 }
@@ -473,7 +467,7 @@ export type SellerStatsUncheckedCreateWithoutUserInput = {
   id?: string
   rating?: number
   totalSales?: number
-  responseTime?: number
+  responseTime?: string | null
   location?: string | null
   description?: string | null
 }
@@ -498,7 +492,7 @@ export type SellerStatsUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalSales?: Prisma.IntFieldUpdateOperationsInput | number
-  responseTime?: Prisma.FloatFieldUpdateOperationsInput | number
+  responseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -507,7 +501,7 @@ export type SellerStatsUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalSales?: Prisma.IntFieldUpdateOperationsInput | number
-  responseTime?: Prisma.FloatFieldUpdateOperationsInput | number
+  responseTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -578,7 +572,7 @@ export type $SellerStatsPayload<ExtArgs extends runtime.Types.Extensions.Interna
     userId: string
     rating: number
     totalSales: number
-    responseTime: number
+    responseTime: string | null
     location: string | null
     description: string | null
   }, ExtArgs["result"]["sellerStats"]>
@@ -1009,7 +1003,7 @@ export interface SellerStatsFieldRefs {
   readonly userId: Prisma.FieldRef<"SellerStats", 'String'>
   readonly rating: Prisma.FieldRef<"SellerStats", 'Float'>
   readonly totalSales: Prisma.FieldRef<"SellerStats", 'Int'>
-  readonly responseTime: Prisma.FieldRef<"SellerStats", 'Float'>
+  readonly responseTime: Prisma.FieldRef<"SellerStats", 'String'>
   readonly location: Prisma.FieldRef<"SellerStats", 'String'>
   readonly description: Prisma.FieldRef<"SellerStats", 'String'>
 }
