@@ -3,6 +3,7 @@ import type { ItemRepository } from "@items/domain/item.repository";
 import { ItemInMemoryRepository } from "@items/infrastructure/item-inmemory.repository";
 import { BaseUseCase } from "@shared/base.use-case";
 
+
 export interface ItemGetAllDto {
     categoryId?: string;
     minPrice?: number;
@@ -21,7 +22,6 @@ export class ItemGetAllCase extends BaseUseCase {
     async execute(filters: ItemGetAllDto = {}): Promise<ItemEntity[]> {
         const items = await this.itemRepository.findAll();
         const nonNullableItems = items.filter((item): item is ItemEntity => !!item);
-
         const filtered = this.applyFilters(nonNullableItems, filters);
         return this.paginate(filtered, filters.page, filters.pageSize);
     }

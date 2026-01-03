@@ -11,7 +11,6 @@ import { UserUpdateDto } from "@users/application/use-cases/update/dto/user-upda
 import { UserUpdateUseCase } from "@users/application/use-cases/update/user-update.use-case";
 import { UserResponseDto } from "@users/domain/user.response";
 import { userRepositoryPrismaSingleton } from "@shared/infrastructure/prisma-singletons";
-import { getLogger } from "@shared/infrastructure/logger/singleton.logger";
 
 const userRepository = userRepositoryPrismaSingleton;
 const userRegisterUseCase = new UserRegisterUseCase(userRepository);

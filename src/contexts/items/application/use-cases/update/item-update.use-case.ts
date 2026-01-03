@@ -15,6 +15,8 @@ import { isNumberObject } from "util/types";
 import { CategoryRepository } from "../../../category/domain/category.respository";
 import { CategoryInMemoryRepository } from "../../../category/infrastructure/category.in-memory-repository";
 
+const logger = getLogger();
+
 export class ItemUpdateUseCase implements BaseUseCase {
     private readonly itemRepository: ItemRepository;
     private readonly userRepository: UserRepository;
@@ -34,7 +36,6 @@ export class ItemUpdateUseCase implements BaseUseCase {
         request: ItemUpdateDto,
         authorizationHeader: string | undefined,
     ): Promise<ItemEntity> {
-        const logger = getLogger();
         let user: UserEntity | undefined;
 
         if (isNumberObject(request?.price)) {
