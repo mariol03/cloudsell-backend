@@ -11,6 +11,7 @@ import { SellerStats } from "@contexts/users/domain/seller.stats";
 import { ItemRepository } from "@contexts/items/domain/item.repository";
 import { ItemInMemoryRepository } from "@contexts/items/infrastructure/item-inmemory.repository";
 import { InsufficientStockException } from "@/contexts/orders/domain/exceptions/insufficient-stock.exception";
+import { ItemNotFoundException } from "@/contexts/items/domain/exceptions/item-not-found.exception";
 
 export class CreateOrderFromCartUseCase {
     private readonly cartRepo: CartRepository;
@@ -34,24 +35,15 @@ export class CreateOrderFromCartUseCase {
         const cart = await this.cartRepo.findByUserId(body.userId);
         if (!cart || cart.items.length === 0) throw new Error("CartEmpty");
 
-        // Validate stock availability
+        // Validate stock availability and update item stock
         for (const cartItem of cart.items) {
             if (cartItem.quantity > cartItem.item.stock) {
                 throw new InsufficientStockException(cartItem.item.name, cartItem.quantity, cartItem.item.stock);
             }
-        }
+            
+            const item = await this.itemRepo.findById(cartItem.item.id);
 
-        const orderItems: OrderItem[] = cart.items.map((i) => ({
-            item: i.item,
-            quantity: i.quantity,
-            price: i.item.price,
-        }));
-        const order = new OrderEntity(body.userId, orderItems);
-        await this.orderRepo.save(order);
-
-        // Update inventory and seller stats for each item sold
-        for (const cartItem of cart.items) {
-            const item = cartItem.item;
+            if (!item) throw new ItemNotFoundException("id", cartItem.item.id);
             
             // Decrease item stock
             item.stock -= cartItem.quantity;
@@ -67,6 +59,14 @@ export class CreateOrderFromCartUseCase {
                 await this.userRepo.save(seller);
             }
         }
+
+        const orderItems: OrderItem[] = cart.items.map((i) => ({
+            item: i.item,
+            quantity: i.quantity,
+            price: i.item.price,
+        }));
+        const order = new OrderEntity(body.userId, orderItems);
+        await this.orderRepo.save(order);
 
         // Update user stats
         const user = await this.userRepo.findById(body.userId);
